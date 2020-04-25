@@ -1,0 +1,57 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require foundation_and_overrides
+ *= require_tree .
+ *= require_self
+
+ */
+
+.top-bar {
+  background-color: #152e27;
+}
+
+.top-bar a{
+  color: #E6354A;
+}
+
+.top-bar h1{
+  font-family: 'Luckiest Guy', cursive;
+  margin-top: 1rem;
+}
+
+.top-bar p{
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.content {
+  margin: 2em;
+}
+
+h2{
+  color: #152e27;
+  font-weight: bold;
+}
+
+label{
+  color: #152e27;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+input{
+  background-color: #152e27;
+  font-size: 1.25rem;
+  color: white;
+  font-weight: bold;
+}
