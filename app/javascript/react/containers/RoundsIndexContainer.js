@@ -20,7 +20,7 @@ const RoundsIndexContainer = () => {
       return response.json()
     })
     .then((body) => {
-      setRounds(body)
+      setRounds(body.rounds)
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
@@ -41,7 +41,10 @@ const RoundsIndexContainer = () => {
   }
 
   return (
-    <div>
+    <div className="grid-container">
+      <div className="grid-x center">
+        <input type="submit" className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center" value="Start New Round"/>
+      </div>
       {roundsTiles}
     </div>
   )

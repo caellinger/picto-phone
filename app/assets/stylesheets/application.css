@@ -16,6 +16,12 @@
 
  */
 
+a{
+  color: #326771;
+  /* color: #E6354A; */
+  font-weight: bold;
+}
+
 .top-bar {
   background-color: #152e27;
 }
@@ -35,7 +41,8 @@
 }
 
 .content {
-  margin: 2em;
+  margin: 0 auto;
+  margin-top: 3rem;
 }
 
 h2{
@@ -49,9 +56,27 @@ label{
   font-weight: bold;
 }
 
-input{
-  background-color: #152e27;
-  font-size: 1.25rem;
+.custom-button{
+  background-color: #E6354A;
+  font-size: 1.5rem;
   color: white;
   font-weight: bold;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.tile {
+  border: .5em solid #152e27;
+  margin: 1em;
+}
+
+.tile-margins {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.tile-text {
+  font-size: 1.5em;
 }
