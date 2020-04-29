@@ -3,6 +3,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :user_name, presence: true, uniqueness: true
-
-  has_many :rounds
+  validates :email, presence: true, uniqueness: true
+  validates :password, presence: true
 end

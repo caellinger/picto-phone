@@ -1,24 +1,7 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![Codeship Status for caellinger/picto-phone](https://app.codeship.com/projects/c4d642b0-6be7-0138-fa1c-2a4bda735c4c/status?branch=master)](https://app.codeship.com/projects/394569)
 
-Things you may want to cover:
+PictoPhone is an app developed by Christie Ellinger as a capstone project for Launch Academy.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Currently working towards an MVP to imitate Pictionary, but will ultimately resemble Telestrations.
