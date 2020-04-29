@@ -17,7 +17,6 @@ feature 'user registers', %Q{
     visit new_user_registration_path
 
     fill_in 'User name', with: user.user_name
-    binding.pry
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     fill_in 'Password confirmation', with: user.password
