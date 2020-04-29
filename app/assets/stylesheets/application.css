@@ -42,7 +42,12 @@ a{
 
 .content {
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: 2rem;
+}
+
+.flash {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 h2{
