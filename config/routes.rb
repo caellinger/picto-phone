@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'homes#index'
   devise_for :users
 
+  get '/', to: "homes#index"
   get '/rounds', to: "homes#index"
 
   namespace :api do

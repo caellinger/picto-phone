@@ -1,7 +1,8 @@
 class Api::V1::RoundSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :user_name
+  attributes :id, :starter_id
 
-  def user_name
-    object.user.user_name
+  def starter_id
+    starter = object.participants.find_by round_starter: true
+    starter.user.user_name
   end
 end

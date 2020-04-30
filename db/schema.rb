@@ -10,16 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_25_035016) do
+ActiveRecord::Schema.define(version: 2020_04_30_011148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "rounds", force: :cascade do |t|
+  create_table "participants", force: :cascade do |t|
+    t.bigint "round_id", null: false
     t.bigint "user_id", null: false
-    t.string "prompt"
-    t.text "image"
-    t.index ["user_id"], name: "index_rounds_on_user_id"
+    t.integer "order_id", null: false
+    t.string "participant_type", null: false
+    t.boolean "round_starter", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_participants_on_order_id", unique: true
+    t.index ["round_id"], name: "index_participants_on_round_id"
+    t.index ["user_id"], name: "index_participants_on_user_id"
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.string "prompt", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

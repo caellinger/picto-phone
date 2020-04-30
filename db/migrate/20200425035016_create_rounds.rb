@@ -1,9 +1,9 @@
 class CreateRounds < ActiveRecord::Migration[5.2]
   def change
     create_table :rounds do |t|
-      t.belongs_to :user, null: false
-      t.string :prompt
-      t.text :image
+      t.string :prompt, null: false
+
+      t.timestamps null: false
     end
   end
 end
