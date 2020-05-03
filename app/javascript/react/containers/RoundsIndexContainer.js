@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import RoundTile from '../components/RoundTile'
+import NewRoundButton from '../components/NewRoundButton'
 
 const RoundsIndexContainer = () => {
   const [rounds, setRounds] = useState([])
@@ -44,17 +45,17 @@ const RoundsIndexContainer = () => {
     })
   }
 
-  let newRoundButton
-  if (user.id) {
-    newRoundButton = <input type="submit" className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center" value="Start New Round"/>
-  } else {
-    newRoundButton = <></>
-  }
+  // let newRoundButton
+  // if (user.id) {
+  //   newRoundButton = <input type="submit" className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center" value="Start New Round" onClick={newRoundClick} />
+  // } else {
+  //   newRoundButton = <></>
+  // }
 
   return (
     <div className="grid-container">
       <div className="grid-x center">
-        {newRoundButton}
+        <NewRoundButton user={user}/>
       </div>
       {roundsTiles}
     </div>
