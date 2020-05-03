@@ -31,7 +31,7 @@ const RoundsIndexContainer = () => {
   }, [])
 
   let roundsTiles
-  if (rounds.length === 0) {
+  if (rounds.length < 1) {
     roundsTiles = "No active games"
   } else {
     roundsTiles = rounds.map(round => {
@@ -46,9 +46,7 @@ const RoundsIndexContainer = () => {
 
   let newRoundButton
   if (user.id) {
-    newRoundButton = (
-      <input type="submit" className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center" value="Start New Round"/>
-    )
+    newRoundButton = <input type="submit" className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center" value="Start New Round"/>
   } else {
     newRoundButton = <></>
   }

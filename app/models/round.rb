@@ -1,5 +1,4 @@
 class Round < ApplicationRecord
-  validates :prompt, presence: true
-
+  validates :starter_name, presence: true
   has_many :participants
 end
