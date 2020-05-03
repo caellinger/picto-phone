@@ -12,6 +12,10 @@ const RoundsIndexContainer = () => {
   })
   const [roundCreated, setRoundCreated] = useState(null)
 
+  let setRoundID = (roundID) => {
+    setRoundCreated(roundID)
+  }
+
   useEffect(() => {
     fetch("/api/v1/rounds")
     .then((response) => {
@@ -42,13 +46,11 @@ const RoundsIndexContainer = () => {
         <RoundTile
           key={round.id}
           round={round}
+          user={user}
+          setRoundID={setRoundID}
         />
       )
     })
-  }
-
-  let setRoundID = (roundID) => {
-    setRoundCreated(roundID)
   }
 
   if (roundCreated) {
