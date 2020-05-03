@@ -28,7 +28,6 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       sign_in user1
       get :index
       response_body = JSON.parse(response.body)
-      binding.pry
 
       expect(response_body["rounds"][0]["user"].length).to eq 2
       expect(response_body["rounds"][0]["user"]["userName"]).to eq user1.user_name
