@@ -4,6 +4,7 @@
   <title>PictoPhone</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy&display=swap" rel="stylesheet">
 </head>
@@ -25,11 +26,13 @@
   </nav>
 
   <div class="content grid-container">
-    <%- flash.each do |key, value| -%>
-      <div class="flash flash-<%= key %>">
-        <%= value %>
-      </div>
-    <%- end -%>
+    <div class="flash">
+      <%- flash.each do |key, value| -%>
+        <div class="flash flash-<%= key %>">
+          <%= value %>
+        </div>
+      <%- end -%>
+    </div>
 
     <%= yield %>
   </div>
