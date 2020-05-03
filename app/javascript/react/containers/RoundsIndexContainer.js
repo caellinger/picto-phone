@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from "react-router-dom"
 
 import RoundTile from '../components/RoundTile'
 import NewRoundButton from '../components/NewRoundButton'
@@ -9,6 +10,7 @@ const RoundsIndexContainer = () => {
     id: null,
     userName: null
   })
+  const [roundCreated, setRoundCreated] = useState(null)
 
   useEffect(() => {
     fetch("/api/v1/rounds")
@@ -45,17 +47,18 @@ const RoundsIndexContainer = () => {
     })
   }
 
-  // let newRoundButton
-  // if (user.id) {
-  //   newRoundButton = <input type="submit" className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center" value="Start New Round" onClick={newRoundClick} />
-  // } else {
-  //   newRoundButton = <></>
-  // }
+  let setRoundID = (roundID) => {
+    setRoundCreated(roundID)
+  }
+
+  if (roundCreated) {
+    return <Redirect to={`/rounds/${roundCreated}`} />
+  }
 
   return (
     <div className="grid-container">
       <div className="grid-x center">
-        <NewRoundButton user={user}/>
+        <NewRoundButton user={user} setRoundID={setRoundID}/>
       </div>
       {roundsTiles}
     </div>
