@@ -4,10 +4,11 @@ Rails.application.routes.draw do
 
   get '/', to: "homes#index"
   get '/rounds', to: "homes#index"
+  get '/rounds/:id', to: "homes#authenticate"
 
   namespace :api do
     namespace :v1 do
-      resources :rounds, only: [:index]
+      resources :rounds, only: [:index, :create]
     end
   end
 end
