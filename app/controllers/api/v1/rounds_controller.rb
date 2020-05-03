@@ -3,10 +3,5 @@ class Api::V1::RoundsController < ApplicationController
 
   def index
     render json: Round.all
-    # if Round.all === []
-    #   render json: User.all
-    # else
-    #   render json: Round.all
-    # end
   end
 end
