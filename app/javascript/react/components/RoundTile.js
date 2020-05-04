@@ -29,7 +29,6 @@ const RoundTile = (props) => {
     })
     .then(response => response.json())
     .then(body => {
-      debugger
       props.setRoundID(body.participant.round_id)
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
