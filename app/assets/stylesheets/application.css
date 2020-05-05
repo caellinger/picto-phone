@@ -18,7 +18,6 @@
 
 a{
   color: #326771;
-  /* color: #E6354A; */
   font-weight: bold;
 }
 
@@ -48,6 +47,10 @@ a{
 .flash {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.grid-container {
+  margin-bottom: 2rem;
 }
 
 h2{
@@ -84,4 +87,20 @@ label{
 
 .tile-text {
   font-size: 1.5em;
+}
+
+.page-title {
+  color: #E6354A;
+  font-size: 3em;
+  text-align: center;
+  font-family: 'Luckiest Guy', cursive;
+}
+
+.waiting {
+  font-style: italic;
+  font-weight: bold;
+  color: #E6354A;
+  font-size: 1.5em;
+  margin: 0 auto;
+  text-align: center;
 }

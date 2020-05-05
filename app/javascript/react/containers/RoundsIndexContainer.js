@@ -10,10 +10,10 @@ const RoundsIndexContainer = () => {
     id: null,
     userName: null
   })
-  const [roundCreated, setRoundCreated] = useState(null)
+  const [round, setRound] = useState(null)
 
   let setRoundID = (roundID) => {
-    setRoundCreated(roundID)
+    setRound(roundID)
   }
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const RoundsIndexContainer = () => {
     })
     .then((body) => {
       setRounds(body.rounds)
-      setUser(body.rounds[0].user)
+      setUser(body.rounds[0].current_user)
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
@@ -53,8 +53,8 @@ const RoundsIndexContainer = () => {
     })
   }
 
-  if (roundCreated) {
-    return <Redirect to={`/rounds/${roundCreated}`} />
+  if (round) {
+    return <Redirect to={`/rounds/${round}`} />
   }
 
   return (
