@@ -1,5 +1,5 @@
 class Api::V1::RoundShowSerializer < ActiveModel::Serializer
-  attributes :id, :starter_name, :current_user, :participants
+  attributes :id, :starter_name, :current_user, :participants, :status, :turn, :turn_user_id
 
   def current_user
     if scope

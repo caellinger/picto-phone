@@ -5,7 +5,8 @@ const NewRoundButton = (props) => {
   let newRoundClick = (event) => {
     event.preventDefault()
     let round = {
-      starter_name: props.user.userName
+      starter_name: props.user.userName,
+      turn_user_id: props.user.id
     }
     fetch("/api/v1/rounds", {
         credentials: "same-origin",

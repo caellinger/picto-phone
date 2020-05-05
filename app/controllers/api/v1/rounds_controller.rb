@@ -22,6 +22,6 @@ class Api::V1::RoundsController < ApplicationController
   private
 
   def create_round_params
-    params.require(:round).permit(:starter_name)
+    params.require(:round).permit(:starter_name, :turn_user_id)
   end
 end
