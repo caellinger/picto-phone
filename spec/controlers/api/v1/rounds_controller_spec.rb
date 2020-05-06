@@ -126,18 +126,13 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
     let!(:participant2) { Participant.create(round: round1, user: user2, participant_type: "guesser", round_starter: false) }
     let!(:participant3) { Participant.create(round: round1, user: user3, participant_type: "guesser", round_starter: false) }
 
-    it "returns a successful response status and a content type of json" do
-      get :index
-
-      expect(response.status).to eq 200
-      expect(response.content_type).to eq 'application/json'
-    end
-
-    it "returns information on specified round, participants of that round, the current_user, round status, and whose turn it is" do
+    it "returns a successful response status and a content type of json, information on specified round, participants of that round, the current_user, round status, and whose turn it is" do
       sign_in user1
       get :show, params: {id: round1.id}
       response_body = JSON.parse(response.body)
 
+      expect(response.status).to eq 200
+      expect(response.content_type).to eq 'application/json'
       expect(response_body.length).to eq 1
       expect(response_body["round"]["id"]).to eq round1.id
       expect(response_body["round"]["starter_name"]).to eq round1.starter_name
@@ -148,6 +143,31 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       expect(response_body["round"]["status"]).to eq "waiting"
       expect(response_body["round"]["turn"]).to eq 0
       expect(response_body["round"]["turn_user_id"]).to eq user1.id
+    end
+  end
+
+  describe "PATCH#update" do
+    let!(:user1) { User.create(email: "test1@email.com", user_name: "test_user_1", password: "password") }
+    let!(:user2) { User.create(email: "test2@email.com", user_name: "test_user_2", password: "password") }
+    let!(:round1) { Round.create(starter_name: "test_user_1", turn_user_id: user1.id) }
+    let!(:participant1) { Participant.create(user_id: user1.id, round_id: round1.id, participant_type: "drawer", round_starter: true) }
+    let!(:participant2) { Participant.create(user_id: user2.id, round_id: round1.id, participant_type: "guesser", round_starter: false) }
+
+    it "updates status" do
+      sign_in user1
+      edit_json = { id: round1.id, round: { status: "in progress",  } }
+      put :update, params: edit_json, format: :json
+
+      expect(Round.find(round1.id).status).to eq "in progress"
+    end
+
+    it "increments turn and updates turn_user_id if parameter turn is true" do
+      sign_in user1
+      edit_json = { id: round1.id, round: { turn: true } }
+      put :update, params: edit_json, format: :json
+
+      expect(Round.find(round1.id).turn).to eq 1
+      expect(Round.find(round1.id).turn_user_id).to eq user2.id
     end
   end
 end

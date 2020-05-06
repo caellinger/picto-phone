@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :rounds, only: [:index, :create, :show]
+      resources :rounds, only: [:index, :create, :show, :update]
       resources :participants, only: [:create]
     end
   end

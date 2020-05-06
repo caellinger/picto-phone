@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import RoundWaitingComponent from '../components/RoundWaitingComponent'
+import RoundInProgressComponent from '../components/RoundInProgressComponent'
 
 const RoundsShowContainer = (props) => {
   const [round, setRound] = useState({
@@ -14,6 +15,7 @@ const RoundsShowContainer = (props) => {
   })
   const [status, setStatus] = useState("waiting")
   const [turn, setTurn] = useState(0)
+  const [turnUserID, setTurnUserID] = useState(null)
 
   useEffect(() => {
     const id = props.match.params.id
@@ -39,6 +41,7 @@ const RoundsShowContainer = (props) => {
       setUser(body.round.current_user)
       setStatus(body.round.status)
       setTurn(body.round.turn)
+      setTurnUserID(body.round.turn_user_id)
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
@@ -51,6 +54,12 @@ const RoundsShowContainer = (props) => {
         user={user}
         round={round}
       />
+  } else if (status == "in progress" && turnUserID == user.id) {
+    renderComponent =
+      <div>Your turn</div>
+  } else {
+    renderComponent =
+      <RoundInProgressComponent />
   }
 
   return (
