@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import ParticipantTile from '../components/ParticipantTile'
+import RoundWaitingComponent from '../components/RoundWaitingComponent'
+import RoundInProgressComponent from '../components/RoundInProgressComponent'
 
 const RoundsShowContainer = (props) => {
-  // if starter hasn't clicked start button yet, show list of users in round
-  // if user is the starter, show the start button
-  // when starter clicks start button, api call to get prompt, show prompt and drawing pad
   const [round, setRound] = useState({
     id: null,
     starterName: null,
@@ -15,7 +13,9 @@ const RoundsShowContainer = (props) => {
     id: null,
     userName: null
   })
-  const [shouldRedirect, setShouldRedirect] = useState(false)
+  const [status, setStatus] = useState("waiting")
+  const [turn, setTurn] = useState(0)
+  const [turnUserID, setTurnUserID] = useState(null)
 
   useEffect(() => {
     const id = props.match.params.id
@@ -39,50 +39,32 @@ const RoundsShowContainer = (props) => {
       })
       setPlayers(body.round.participants.participants)
       setUser(body.round.current_user)
+      setStatus(body.round.status)
+      setTurn(body.round.turn)
+      setTurnUserID(body.round.turn_user_id)
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
 
-  let playerList
-  if (players.length > 0) {
-    playerList = players.map(player => {
-      return (
-        <ParticipantTile
-          key={player.id}
-          participant={player}
-          />
-      )
-    })
-  }
-
-  let startButton
-  if (user.userName == round.starterName && user.userName != null) {
-    startButton =
-      <input
-        type="submit"
-        className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center"
-        value="Start Round"
+  let renderComponent
+  if (status == "waiting") {
+    renderComponent =
+      <RoundWaitingComponent
+        players={players}
+        user={user}
+        round={round}
       />
+  } else if (status == "in progress" && turnUserID == user.id) {
+    renderComponent =
+      <div>Your turn</div>
   } else {
-    startButton =
-      <div className="cell small-8 small-offset-2 align-middle align-center waiting">
-        Waiting for the host to start the game
-      </div>
-  }
-
-  let clickStart = (event) => {
-    event.preventDefault
+    renderComponent =
+      <RoundInProgressComponent />
   }
 
   return (
     <div>
-      <h3 className="page-title">Players</h3>
-      <div className="grid-container">
-        {playerList}
-        <div className="grid-x center">
-          {startButton}
-        </div>
-      </div>
+      {renderComponent}
     </div>
   )
 }

@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe Api::V1::ParticipantsController, type: :controller do
   describe "POST#new" do
-    let!(:new_round) { Round.create(starter_name: "test_user") }
     let!(:user_1) { User.create(email: "test1@email.com", user_name: "test_user_1", password: "password") }
     let!(:user_2) { User.create(email: "test2@email.com", user_name: "test_user_2", password: "password") }
+    let!(:new_round) { Round.create(starter_name: "test_user", turn_user_id: user_1.id) }
     let!(:new_participant_1) { { participant: { user_id: user_1.id, round_id: new_round.id, participant_type: "drawer", round_starter: true } } }
 
     it "fails to create a new Participant record for an unauthenticated user" do

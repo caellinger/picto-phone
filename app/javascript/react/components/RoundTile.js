@@ -15,7 +15,7 @@ const RoundTile = (props) => {
       body: JSON.stringify(participant),
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       }
     })
     .then(response => {

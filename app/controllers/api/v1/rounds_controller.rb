@@ -19,9 +19,30 @@ class Api::V1::RoundsController < ApplicationController
     render json: Round.find(params[:id]), serializer: Api::V1::RoundShowSerializer
   end
 
+  def update
+    round = Round.find(params[:id])
+
+    if update_round_params[:status]
+      round.status = update_round_params[:status]
+    end
+
+    if update_round_params[:turn]
+      round.turn += 1
+      round.turn_user_id = Participant.order(:created_at).offset(round.turn).find_by(round_id: round.id).user_id
+    end
+
+    round.save
+
+    render json: {}, status: :no_content
+  end
+
   private
 
   def create_round_params
-    params.require(:round).permit(:starter_name)
+    params.require(:round).permit(:starter_name, :turn_user_id)
+  end
+
+  def update_round_params
+    params.require(:round).permit(:status, :turn)
   end
 end
