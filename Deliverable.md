@@ -79,3 +79,11 @@ So that I can laugh at my friends
 ### Brief Description (aka Your "Elevator Pitch")
 
 PictoPhone is a combination of Pictionary and Telephone, inspired by the game Telestrations. A player will start a round, and then other players can join. The initial player receives a random word prompt from the Dictionary API, which they draw. The next player sees this drawing, and guesses what the prompt was. The next player sees the second player's guess, and draws it. The next player sees the drawing of the guess, etc. After all players have either drawn or guessed, the series of guesses and drawings are displayed to all users.
+
+
+
+
+
+https://github.com/szimek/signature_pad
+https://github.com/michaeldzjap/react-signature-pad-wrapper
+https://www.npmjs.com/package/react-signature-canvas
