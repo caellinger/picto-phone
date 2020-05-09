@@ -53,7 +53,6 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
         turn_user_id: user.id,
         user_id: user.id,
         round_starter: true,
-        # round_id: 1
       } }
       post :create, params: new_json, format: :json
       new_count = Round.count
@@ -69,7 +68,6 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
         turn_user_id: user.id,
         user_id: user.id,
         round_starter: true,
-        # round_id: 1
       } }
       post :create, params: new_json, format: :json
       response_body = JSON.parse(response.body)
@@ -106,7 +104,6 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
         starter_name: user.user_name,
         user_id: user.id,
         round_starter: true,
-        # round_id: 1
       } }
       post :create, params: bad_json, format: :json
       new_count = Round.count
@@ -140,7 +137,6 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
         starter_name: user.user_name,
         turn_user_id: user.id,
         user_id: user.id,
-        # round_id: 1
       } }
       post :create, params: bad_json, format: :json
       new_count = Participant.count
