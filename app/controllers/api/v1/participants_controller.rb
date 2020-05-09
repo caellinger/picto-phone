@@ -14,6 +14,6 @@ class Api::V1::ParticipantsController < ApplicationController
   private
 
   def participant_params
-    params.require(:participant).permit(:round_id, :user_id, :participant_type, :round_starter)
+    params.require(:participant).permit(:round_id, :user_id, :participant_type, :round_starter, :prompt, :response)
   end
 end
