@@ -43,14 +43,20 @@ class Api::V1::RoundsController < ApplicationController
       round.status = update_round_params[:status]
     end
 
-    if update_round_params[:turn]
-      round.turn += 1
-      round.turn_user_id = Participant.order(:created_at).offset(round.turn).find_by(round_id: round.id).user_id
+    # if update_round_params[:turn]
+    #   round.turn += 1
+    #   round.turn_user_id = Participant.order(:created_at).offset(round.turn).find_by(round_id: round.id).user_id
+    # end
+
+    if update_round_params[:participant_type]
+      participant = round.participants.where(user_id: current_user.id)[0]
+      participant.participant_type = update_round_params[:participant_type]
     end
 
-    if update_round_params[:participant]
-      binding.pry
-    end
+    if update_round_params[:prompt]
+      round.prompt = "elephant"
+      participant.prompt = "elephant"
+    end # TODO: REMOVE ONCE WORDS API IS CONNECTED
 
     round.save
 
@@ -68,6 +74,6 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def update_round_params
-    params.require(:payload).permit(:status)
+    params.require(:payload).permit(:status, :participant_type, :prompt)
   end
 end

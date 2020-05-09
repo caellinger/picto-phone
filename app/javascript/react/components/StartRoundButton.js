@@ -5,7 +5,9 @@ const StartRoundButton = (props) => {
   let clickStart = (event) => {
     event.preventDefault()
     let payload = {
-      status: "in progress"
+      status: "in progress",
+      participant_type: "drawer",
+      prompt: "elephant" // TODO: REMOVE ONCE WORDS API IS CONNECTED
     }
     props.updateStatusInProgress(payload)
   }
