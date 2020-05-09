@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2020_05_08_172023) do
   end
 
   create_table "drawings", force: :cascade do |t|
-    t.bigint "drawer_id"
+    t.bigint "drawer_id", null: false
     t.text "drawing", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

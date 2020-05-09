@@ -51,7 +51,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
     let!(:bad_round_3) { { round: { starter_name: "test_user_1", turn_user_id: "" } } }
     let!(:bad_round_4) { { round: { starter_name: "test_user_1", turn_user_id: nil } } }
 
-    it "fails to create a new Podcast record for an unauthenticated user" do
+    it "fails to create a new Round record for an unauthenticated user" do
       previous_count = Round.count
       post :create, params: new_round, format: :json
       new_count = Round.count

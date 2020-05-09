@@ -10,7 +10,8 @@ class Api::V1::DrawingsController < ApplicationController
     data_uri = params[:drawing]
     drawer_id = Participant.where(user_id: params[:user][:id]).where(round_id: params[:round][:id])[0].drawers[0].id
     drawing = Drawing.create(drawing: data_uri, drawer_id: drawer_id)
-    binding.pry
+    drawer = Drawer.find(drawer_id)
+    drawer.drawing_location = drawing.drawing.url
     if drawing.save
     else
       render json: { error: drawing.errors.full_messages }, status: :unprocessable_entity

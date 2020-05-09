@@ -17,3 +17,5 @@ class Api::V1::DrawersController < ApplicationController
     params.require(:drawer).permit(:participant_id)
   end
 end
+
+# TODO: is this file necessary? not using an api endpoint to create a drawer record...will I need it for updating drawer record after drawing is created?

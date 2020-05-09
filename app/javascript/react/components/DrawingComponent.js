@@ -4,19 +4,18 @@ import SignatureCanvas from 'react-signature-canvas'
 
 const DrawingComponent = (props) => {
   const [imageSubmitted, setImageSubmitted] = useState(false)
-  const signaturePad = {}
   let submitHandler = (event) => {
     event.preventDefault()
 
-    if (this.signaturePad.isEmpty()) {
+    if (this.sigCanvas.isEmpty()) {
       alert("You can't submit an empty drawing!");
     } else {
-      this.signaturePad.backgroundColor='rgb(242,242,235)'
+      this.sigCanvas.backgroundColor='rgb(242,242,235)'
       let dataURL = {
-        drawing: `${this.signaturePad.toDataURL("image/jpeg")}`,
+        drawing: `${this.sigCanvas.toDataURL("image/jpeg")}`,
         user: props.user,
         round: props.round
-      } // // TODO: this needs to include user info
+      }
 
       fetch("/api/v1/drawings", {
         credentials: "same-origin",
@@ -38,16 +37,13 @@ const DrawingComponent = (props) => {
       })
       .catch(error => console.error(`Error in fetch: ${error.message}`))
 
-      this.signaturePad.clear()
+      this.sigCanvas.clear()
     }
   }
-  // height={500}
   let ref = {
     backgroundColor: 'rgb(242,242,235)',
     penColor: 'rgb(250,0,0)'
   }
-  signaturePad.backgroundColor='rgb(242,242,235)'
-  signaturePad.penColor='rgb(250,0,0)'
 
   return (
     <div className="grid-x">
@@ -55,8 +51,9 @@ const DrawingComponent = (props) => {
         Your prompt is: Elephant
       </div>
       <div className="sig-pad-container cell small-12">
-        <SignaturePad
-          ref={(ref) => { this.signaturePad = ref }}
+        <SignatureCanvas
+          ref={(ref) => { this.sigCanvas = ref }}
+          backgroundColor='#f2f2eb'
         />
       </div>
       <input
