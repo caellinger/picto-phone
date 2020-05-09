@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import RoundWaitingComponent from '../components/RoundWaitingComponent'
 import RoundInProgressComponent from '../components/RoundInProgressComponent'
+import DrawingComponent from '../components/DrawingComponent'
 
 const RoundsShowContainer = (props) => {
   const [round, setRound] = useState({
@@ -54,9 +55,12 @@ const RoundsShowContainer = (props) => {
         user={user}
         round={round}
       />
-  } else if (status == "in progress" && turnUserID == user.id) {
+  } else if (status == "in progress" && turnUserID == user.id && turn % 2 == 0) {
     renderComponent =
-      <div>Your turn</div>
+      <DrawingComponent
+        user={user}
+        round={round}
+      />
   } else {
     renderComponent =
       <RoundInProgressComponent />

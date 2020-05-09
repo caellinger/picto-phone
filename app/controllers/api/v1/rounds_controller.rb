@@ -26,9 +26,26 @@ class Api::V1::RoundsController < ApplicationController
       round.status = update_round_params[:status]
     end
 
+    if update_round_params[:prompt]
+      round.prompt = update_round_params[:prompt]
+    end
+
     if update_round_params[:turn]
       round.turn += 1
       round.turn_user_id = Participant.order(:created_at).offset(round.turn).find_by(round_id: round.id).user_id
+    end
+
+    if round.turn == 0
+      drawer = Drawer.new
+      drawer.participant = round.participants.offset(round.turn)[0]
+      drawer.prompt = round.prompt
+      drawer.save
+    end
+
+    if round.turn % 2 == 0 && round.turn != 0
+      drawer = Drawer.new
+      drawer.participant = round.participants.offset(round.turn)[0]
+      binding.pry
     end
 
     round.save
@@ -43,6 +60,6 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def update_round_params
-    params.require(:round).permit(:status, :turn)
+    params.require(:round).permit(:status, :turn, :prompt, :user_id)
   end
 end

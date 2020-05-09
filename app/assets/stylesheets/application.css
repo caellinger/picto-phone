@@ -104,3 +104,9 @@ label{
   margin: 0 auto;
   text-align: center;
 }
+
+canvas {
+  border: 3px solid #c4c4c2;
+  background: #f2f2eb;
+  height: 450px
+}

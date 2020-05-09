@@ -8,8 +8,10 @@ const StartRoundButton = (props) => {
       credentials: "same-origin",
       method: 'PATCH',
       body: JSON.stringify({
-        status: "in progress" // ,
-        // prompt: "elephant",
+        status: "in progress",
+        user_id: props.user.id,
+        prompt: "elephant",
+        drawer: props.user.id
         // turn: true
       }),
       headers: {
