@@ -45,36 +45,50 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
 
   describe "POST#new" do
     let!(:user) { User.create(email: "test@email.com", user_name: "test_user_1", password: "password") }
-    let!(:new_round) { {round: { starter_name: "test_user_1", turn_user_id: user.id } } }
-    let!(:bad_round_1) { { round: { starter_name: "", turn_user_id: user.id } } }
-    let!(:bad_round_2) { { round: { starter_name: nil, turn_user_id: user.id  } } }
-    let!(:bad_round_3) { { round: { starter_name: "test_user_1", turn_user_id: "" } } }
-    let!(:bad_round_4) { { round: { starter_name: "test_user_1", turn_user_id: nil } } }
 
-    it "fails to create a new Podcast record for an unauthenticated user" do
+    it "fails to create a new Round record for an unauthenticated user" do
       previous_count = Round.count
-      post :create, params: new_round, format: :json
+      new_json = { payload: {
+        starter_name: user.user_name,
+        turn_user_id: user.id,
+        user_id: user.id,
+        round_starter: true,
+      } }
+      post :create, params: new_json, format: :json
       new_count = Round.count
 
       expect(new_count).to eq(previous_count)
     end
 
-    it "creates a new Round record for an authenticated user and returns the new Round as json" do
+    it "creates a new Round record and Participant record for an authenticated user and returns the new Round and Participant as json" do
       sign_in user
       previous_count = Round.count
-      post :create, params: new_round, format: :json
+      new_json = { payload: {
+        starter_name: user.user_name,
+        turn_user_id: user.id,
+        user_id: user.id,
+        round_starter: true,
+      } }
+      post :create, params: new_json, format: :json
       response_body = JSON.parse(response.body)
       new_count = Round.count
 
       expect(new_count).to eq(previous_count + 1)
       expect(response_body["round"].length).to eq 8
       expect(response_body["round"]["starter_name"]).to eq user.user_name
+      expect(response_body["participant"].length).to eq 9
+      expect(response_body["participant"]["user_id"]).to eq user.id
     end
 
-    it "does not create a new round and returns error if starter name is empty" do
+    it "does not create a new Round and returns error if starter name is empty" do
       sign_in user
       previous_count = Round.count
-      post :create, params: bad_round_1, format: :json
+      bad_json = { payload: {
+        turn_user_id: user.id,
+        user_id: user.id,
+        round_starter: true,
+      } }
+      post :create, params: bad_json, format: :json
       new_count = Round.count
       response_body = JSON.parse(response.body)
 
@@ -82,21 +96,15 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       expect(response_body["error"][0]).to eq "Starter name can't be blank"
     end
 
-    it "does not create a new round and returns error if starter name is nil" do
+    it "does not create a new Round and returns error if turn_user_id is empty" do
       sign_in user
       previous_count = Round.count
-      post :create, params: bad_round_2, format: :json
-      new_count = Round.count
-      response_body = JSON.parse(response.body)
-
-      expect(new_count).to eq previous_count
-      expect(response_body["error"][0]).to eq "Starter name can't be blank"
-    end
-
-    it "does not create a new round and returns error if turn_user_id is empty" do
-      sign_in user
-      previous_count = Round.count
-      post :create, params: bad_round_3, format: :json
+      bad_json = { payload: {
+        starter_name: user.user_name,
+        user_id: user.id,
+        round_starter: true,
+      } }
+      post :create, params: bad_json, format: :json
       new_count = Round.count
       response_body = JSON.parse(response.body)
 
@@ -104,15 +112,36 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       expect(response_body["error"][0]).to eq "Turn user can't be blank"
     end
 
-    it "does not create a new round and returns error if turn_user_id is nil" do
+    it "does not create a new Participant and returns error if user_id is empty" do
       sign_in user
-      previous_count = Round.count
-      post :create, params: bad_round_4, format: :json
-      new_count = Round.count
+      previous_count = Participant.count
+      bad_json = { payload: {
+        starter_name: user.user_name,
+        turn_user_id: user.id,
+        round_starter: true,
+      } }
+      post :create, params: bad_json, format: :json
+      new_count = Participant.count
       response_body = JSON.parse(response.body)
 
       expect(new_count).to eq previous_count
-      expect(response_body["error"][0]).to eq "Turn user can't be blank"
+      expect(response_body["error"][0]).to eq "User can't be blank"
+    end
+
+    it "does not create a new Participant and returns error if round_starter is empty" do
+      sign_in user
+      previous_count = Participant.count
+      bad_json = { payload: {
+        starter_name: user.user_name,
+        turn_user_id: user.id,
+        user_id: user.id,
+      } }
+      post :create, params: bad_json, format: :json
+      new_count = Participant.count
+      response_body = JSON.parse(response.body)
+
+      expect(new_count).to eq previous_count
+      expect(response_body["error"][0]).to eq "Round starter is not included in the list"
     end
   end
 
