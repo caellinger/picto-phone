@@ -10,18 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_201002) do
+ActiveRecord::Schema.define(version: 2020_05_09_163233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "drawers", force: :cascade do |t|
+    t.bigint "participant_id", null: false
+    t.string "prompt"
+    t.string "drawing_location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["participant_id"], name: "index_drawers_on_participant_id"
+  end
+
+  create_table "drawings", force: :cascade do |t|
+    t.bigint "drawer_id", null: false
+    t.text "drawing", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["drawer_id"], name: "index_drawings_on_drawer_id"
+  end
+
   create_table "participants", force: :cascade do |t|
     t.bigint "round_id", null: false
     t.bigint "user_id", null: false
-    t.string "participant_type", null: false
+    t.string "participant_type"
     t.boolean "round_starter", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "prompt"
+    t.string "response"
     t.index ["round_id"], name: "index_participants_on_round_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
   end

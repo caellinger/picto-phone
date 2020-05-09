@@ -8,7 +8,8 @@ RSpec.describe Participant, type: :model do
   it { should_not have_valid(:user_id).when(nil, "") }
 
   it { should have_valid(:participant_type).when("drawer") }
-  it { should_not have_valid(:participant_type).when(nil, "") }
+  it { should have_valid(:participant_type).when("guesser") }
+  it { should have_valid(:participant_type).when(nil, "") }
 
   it { should have_valid(:round_starter).when(true) }
   it { should have_valid(:round_starter).when(false) }
