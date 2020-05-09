@@ -31,9 +31,17 @@ class Api::V1::RoundsController < ApplicationController
       round.turn_user_id = Participant.order(:created_at).offset(round.turn).find_by(round_id: round.id).user_id
     end
 
+    if update_round_params[:participant]
+      binding.pry
+    end
+
     round.save
 
-    render json: {}, status: :no_content
+    json = {
+      status: round.status
+    }
+
+    render json: json
   end
 
   private
@@ -43,6 +51,6 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def update_round_params
-    params.require(:round).permit(:status, :turn)
+    params.require(:payload).permit(:status)
   end
 end
