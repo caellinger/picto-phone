@@ -4,28 +4,10 @@ import { Redirect } from "react-router-dom"
 const StartRoundButton = (props) => {
   let clickStart = (event) => {
     event.preventDefault()
-    fetch(`/api/v1/rounds/${props.round.id}`, {
-      credentials: "same-origin",
-      method: 'PATCH',
-      body: JSON.stringify({
-        status: "in progress" // ,
-        // prompt: "elephant",
-        // turn: true
-      }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        console.log("ok")
-      } else {
-        let errorMessage = `${response.status} (${response.statusText})`
-        let error = new Error(errorMessage)
-        throw error
-      }
-    })
+    let payload = {
+      status: "in progress"
+    }
+    props.updateStatusInProgress(payload)
   }
 
   let startRoundButton

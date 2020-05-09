@@ -46,21 +46,56 @@ const RoundsShowContainer = (props) => {
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
 
-  let renderComponent
-  if (status == "waiting") {
-    renderComponent =
-      <RoundWaitingComponent
-        players={players}
-        user={user}
-        round={round}
-      />
-  } else if (status == "in progress" && turnUserID == user.id) {
-    renderComponent =
-      <div>Your turn</div>
-  } else {
-    renderComponent =
-      <RoundInProgressComponent />
+  function fetchPost(payload) {
+    const id = props.match.params.id
+    fetch(`/api/v1/rounds/${id}`, {
+      credentials: "same-origin",
+      method: 'PATCH',
+      body: JSON.stringify({ payload }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`
+        let error = new Error(errorMessage)
+        throw error
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((body) => {
+      if (body.status) {
+        setStatus(body.status)
+      }
+    })
   }
+
+  function updateStatusInProgress(payload) {
+    fetchPost(payload)
+  }
+
+  let renderComponent
+    if (status == "waiting") {
+      renderComponent =
+        <RoundWaitingComponent
+          players={players}
+          user={user}
+          round={round}
+          updateStatusInProgress={updateStatusInProgress}
+        />
+    } else if (status == "in progress" && turnUserID == user.id) {
+      renderComponent =
+        <div>Your turn</div>
+    } else {
+      renderComponent =
+        <RoundInProgressComponent />
+    }
 
   return (
     <div>

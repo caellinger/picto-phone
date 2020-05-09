@@ -155,19 +155,10 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
 
     it "updates status" do
       sign_in user1
-      edit_json = { id: round1.id, round: { status: "in progress",  } }
+      edit_json = { id: round1.id, payload: { status: "in progress" } }
       put :update, params: edit_json, format: :json
 
       expect(Round.find(round1.id).status).to eq "in progress"
-    end
-
-    it "increments turn and updates turn_user_id if parameter turn is true" do
-      sign_in user1
-      edit_json = { id: round1.id, round: { turn: true } }
-      put :update, params: edit_json, format: :json
-
-      expect(Round.find(round1.id).turn).to eq 1
-      expect(Round.find(round1.id).turn_user_id).to eq user2.id
     end
   end
 end

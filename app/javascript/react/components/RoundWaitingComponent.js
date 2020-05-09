@@ -25,6 +25,7 @@ const RoundWaitingComponent = (props) => {
           <StartRoundButton
             user={props.user}
             round={props.round}
+            updateStatusInProgress={props.updateStatusInProgress}
             />
         </div>
       </div>
