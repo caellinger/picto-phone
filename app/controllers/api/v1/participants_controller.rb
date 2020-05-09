@@ -3,7 +3,7 @@ class Api::V1::ParticipantsController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def create
-    participant = Participant.new(participant_params)
+    participant = Participant.new(create_participant_params)
     if participant.save
       render json: {participant: participant}
     else
@@ -13,7 +13,7 @@ class Api::V1::ParticipantsController < ApplicationController
 
   private
 
-  def participant_params
-    params.require(:participant).permit(:round_id, :user_id, :participant_type, :round_starter, :prompt, :response)
+  def create_participant_params
+    params.require(:payload).permit(:round_id, :user_id, :round_starter)
   end
 end

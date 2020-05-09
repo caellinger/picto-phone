@@ -3,35 +3,13 @@ import React from 'react'
 const RoundTile = (props) => {
   let clickJoin = (event) => {
     event.preventDefault()
-    let participant = {
+    let payload = {
       round_id: props.round.id,
       user_id: props.user.id,
-      participant_type: "guesser",
       round_starter: "false"
     }
-    fetch("/api/v1/participants", {
-      credentials: "same-origin",
-      method: "POST",
-      body: JSON.stringify(participant),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        return response
-      } else {
-        let errorMessage = `${response.status} (${response.statusText})`
-        let error = new Error(errorMessage)
-        throw error
-      }
-    })
-    .then(response => response.json())
-    .then(body => {
-      props.setRoundID(body.participant.round_id)
-    })
-    .catch((error) => console.error(`Error in fetch: ${error.message}`))
+    let endpoint = "/api/v1/participants"
+    props.joinRound(payload, endpoint)
   }
 
   return (

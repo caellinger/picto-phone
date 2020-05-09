@@ -5,7 +5,7 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
     let!(:user_1) { User.create(email: "test1@email.com", user_name: "test_user_1", password: "password") }
     let!(:user_2) { User.create(email: "test2@email.com", user_name: "test_user_2", password: "password") }
     let!(:new_round) { Round.create(starter_name: "test_user", turn_user_id: user_1.id) }
-    let!(:new_participant_1) { { participant: { user_id: user_1.id, round_id: new_round.id, round_starter: true } } }
+    let!(:new_participant_1) { { payload: { user_id: user_1.id, round_id: new_round.id, round_starter: true } } }
 
     it "fails to create a new Participant record for an unauthenticated user" do
       previous_count = Participant.count
@@ -30,8 +30,8 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
     end
 
     context "when a malformed request is made" do
-      let!(:bad_participant_1) { { participant: { round_id: new_round.id, participant_type: "drawer", round_starter: true } } }
-      let!(:bad_participant_2) { { participant: { user_id: user_1.id, participant_type: "drawer", round_starter: true } } }
+      let!(:bad_participant_1) { { payload: { round_id: new_round.id, participant_type: "drawer", round_starter: true } } }
+      let!(:bad_participant_2) { { payload: { user_id: user_1.id, participant_type: "drawer", round_starter: true } } }
 
       it "does not create a new round and returns error if user_id is empty" do
         sign_in user_1

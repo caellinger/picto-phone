@@ -37,6 +37,40 @@ const RoundsIndexContainer = () => {
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
 
+  function fetchPost(payload, endpoint) {
+    fetch(endpoint, {
+      credentials: "same-origin",
+      method: "POST",
+      body: JSON.stringify({ payload }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`
+        let error = new Error(errorMessage)
+        throw error
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      setRoundID(body.participant.round_id)
+    })
+    .catch((error) => console.error(`Error in fetch: ${error.message}`))
+  }
+
+  function joinRound(payload, endpoint) {
+    fetchPost(payload, endpoint)
+  }
+
+  function createRound(payload, endpoint) {
+    fetchPost(payload, endpoint)
+  }
+
   let roundsTiles
   if (rounds.length < 1) {
     roundsTiles = "No active games"
@@ -47,7 +81,7 @@ const RoundsIndexContainer = () => {
           key={round.id}
           round={round}
           user={user}
-          setRoundID={setRoundID}
+          joinRound={joinRound}
         />
       )
     })
@@ -60,7 +94,11 @@ const RoundsIndexContainer = () => {
   return (
     <div className="grid-container">
       <div className="grid-x center">
-        <NewRoundButton user={user} setRoundID={setRoundID}/>
+        <NewRoundButton
+          user={user}
+          setRoundID={setRoundID}
+          createRound={createRound}
+        />
       </div>
       {roundsTiles}
     </div>

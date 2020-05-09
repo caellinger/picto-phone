@@ -7,9 +7,26 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def create
-    round = Round.new(create_round_params)
+    round = Round.new( {
+      starter_name: create_round_params[:starter_name],
+      turn_user_id: create_round_params[:turn_user_id]
+    } )
+
     if round.save
-      render json: {round: round}
+      participant =  Participant.new( {
+        user_id: create_round_params[:user_id],
+        round_starter: create_round_params[:round_starter],
+        round_id: round.id
+      } )
+
+      if participant.save
+        render json: {
+          round: round,
+          participant: participant
+        }
+      else
+        render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+      end
     else
       render json: { error: round.errors.full_messages }, status: :unprocessable_entity
     end
@@ -47,7 +64,7 @@ class Api::V1::RoundsController < ApplicationController
   private
 
   def create_round_params
-    params.require(:round).permit(:starter_name, :turn_user_id)
+    params.require(:payload).permit(:starter_name, :turn_user_id, :user_id, :round_starter)
   end
 
   def update_round_params
