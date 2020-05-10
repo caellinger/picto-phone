@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import RoundWaitingComponent from '../components/RoundWaitingComponent'
 import RoundInProgressComponent from '../components/RoundInProgressComponent'
+import DrawingComponent from '../components/DrawingComponent'
 
 const RoundsShowContainer = (props) => {
   const [round, setRound] = useState({
@@ -16,6 +17,8 @@ const RoundsShowContainer = (props) => {
   const [status, setStatus] = useState("waiting")
   const [turn, setTurn] = useState(0)
   const [turnUserID, setTurnUserID] = useState(null)
+  const [roundPrompt, setRoundPrompt] = useState(null)
+  const [currentPrompt, setCurrentPrompt] = useState(null)
 
   useEffect(() => {
     const id = props.match.params.id
@@ -42,15 +45,20 @@ const RoundsShowContainer = (props) => {
       setStatus(body.round.status)
       setTurn(body.round.turn)
       setTurnUserID(body.round.turn_user_id)
+      if (body.round.round_prompt) {
+        setRoundPrompt(body.round.round_prompt)
+      }
+      if (body.round.current_prompt) {
+        setCurrentPrompt(body.round.current_prompt)
+      }
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }, [])
 
-  function fetchPost(payload) {
-    const id = props.match.params.id
-    fetch(`/api/v1/rounds/${id}`, {
+  function fetchPost(payload, endpoint, method) {
+    fetch(endpoint, {
       credentials: "same-origin",
-      method: 'PATCH',
+      method: method,
       body: JSON.stringify({ payload }),
       headers: {
         Accept: "application/json",
@@ -70,31 +78,52 @@ const RoundsShowContainer = (props) => {
       return response.json()
     })
     .then((body) => {
-      if (body.status) {
-        setStatus(body.status)
+      if (body.round.status) {
+        setStatus(body.round.status)
+      }
+      if (body.round.turn) {
+        setTurn(body.round.turn)
+      }
+      if (body.round.turn_user_id) {
+        setTurnUserID(body.round.turn_user_id)
+      }
+      if (body.round.round_prompt) {
+        setRoundPrompt(body.round.round_prompt)
+      }
+      if (body.round.current_prompt) {
+        setCurrentPrompt(body.round.current_prompt)
       }
     })
   }
 
-  function updateStatusInProgress(payload) {
-    fetchPost(payload)
+  function updateStatusInProgress(payload, endpoint) {
+    fetchPost(payload, endpoint, 'PATCH')
+  }
+
+  function submitDrawing(payload, endpoint) {
+    fetchPost(payload, endpoint, 'POST')
   }
 
   let renderComponent
     if (status == "waiting") {
-      renderComponent =
-        <RoundWaitingComponent
-          players={players}
-          user={user}
-          round={round}
-          updateStatusInProgress={updateStatusInProgress}
-        />
-    } else if (status == "in progress" && turnUserID == user.id) {
-      renderComponent =
-        <div>Your turn</div>
+      renderComponent = <RoundWaitingComponent
+        players={players}
+        user={user}
+        round={round}
+        updateStatusInProgress={updateStatusInProgress}
+      />
+    } else if (status == "in progress" && turnUserID == user.id && turn % 2 == 0) {
+      renderComponent = <DrawingComponent
+        user={user}
+        round={round}
+        currentPrompt={currentPrompt}
+        submitDrawing={submitDrawing}
+      />
+    } else if (status == "in progress" && turnUserID == user.id && turn % 2 != 0) {
+      renderComponent = <div>Guessing</div>
     } else {
-      renderComponent =
-        <RoundInProgressComponent />
+      renderComponent = <RoundInProgressComponent
+      />
     }
 
   return (

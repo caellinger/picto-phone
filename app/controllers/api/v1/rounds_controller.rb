@@ -3,7 +3,7 @@ class Api::V1::RoundsController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def index
-    render json: Round.all
+    render json: Round.where(status: "waiting").order(:created_at).all
   end
 
   def create
@@ -50,7 +50,8 @@ class Api::V1::RoundsController < ApplicationController
     end
 
     if update_round_params[:prompt]
-      round.prompt = update_round_params[:prompt]
+      round.round_prompt = update_round_params[:prompt]
+      round.current_prompt = update_round_params[:prompt]
       participant.prompt = update_round_params[:prompt]
     end # TODO: REMOVE ONCE WORDS API IS CONNECTED
 
@@ -58,7 +59,7 @@ class Api::V1::RoundsController < ApplicationController
       if participant.save
         render json: {
           round: round,
-          participant: participant
+          participant: participant # TODO: IS THIS USED ANYWHERE?
         }
       else
         render json: { error: participant.errors.full_messages }, status: :unprocessable_entity

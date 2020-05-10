@@ -9,7 +9,8 @@ const StartRoundButton = (props) => {
       participant_type: "drawer",
       prompt: "elephant" // TODO: REMOVE ONCE WORDS API IS CONNECTED
     }
-    props.updateStatusInProgress(payload)
+    let endpoint = `/api/v1/rounds/${props.round.id}`
+    props.updateStatusInProgress(payload, endpoint)
   }
 
   let startRoundButton
