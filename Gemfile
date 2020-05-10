@@ -27,6 +27,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem "active_model_serializers"
+gem "fog-aws"
+gem 'carrierwave', '~> 2.0'
+gem 'carrierwave-base64'
 
 group :development, :test do
 
