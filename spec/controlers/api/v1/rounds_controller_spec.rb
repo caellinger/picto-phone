@@ -189,5 +189,21 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
 
       expect(Round.find(round1.id).status).to eq "in progress"
     end
+
+    it "updates participant type" do
+      sign_in user1
+      edit_json = { id: round1.id, payload: { participant_type: "drawer" } }
+      put :update, params: edit_json, format: :json
+
+      expect(Round.find(round1.id).participants.where(user_id: user1.id)[0].participant_type).to eq "drawer"
+    end
+
+    it "updates prompt for the relevant Round and Participant records" do
+      sign_in user1
+      edit_json = { id: round1.id, payload: { prompt: "elephant" } }
+      put :update, params: edit_json, format: :json
+
+      expect(Round.find(round1.id).participants.where(user_id: user1.id)[0].participant_type).to eq "drawer"
+    end
   end
 end
