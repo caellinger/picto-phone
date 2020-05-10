@@ -38,27 +38,34 @@ class Api::V1::RoundsController < ApplicationController
 
   def update
     round = Round.find(params[:id])
+    participant = round.participants.where(user_id: current_user.id)[0]
+
 
     if update_round_params[:status]
       round.status = update_round_params[:status]
     end
 
-    if update_round_params[:turn]
-      round.turn += 1
-      round.turn_user_id = Participant.order(:created_at).offset(round.turn).find_by(round_id: round.id).user_id
+    if update_round_params[:participant_type]
+      participant.participant_type = update_round_params[:participant_type]
     end
 
-    if update_round_params[:participant]
-      binding.pry
+    if update_round_params[:prompt]
+      round.prompt = update_round_params[:prompt]
+      participant.prompt = update_round_params[:prompt]
+    end # TODO: REMOVE ONCE WORDS API IS CONNECTED
+
+    if round.save
+      if participant.save
+        render json: {
+          round: round,
+          participant: participant
+        }
+      else
+        render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: round.errors.full_messages }, status: :unprocessable_entity
     end
-
-    round.save
-
-    json = {
-      status: round.status
-    }
-
-    render json: json
   end
 
   private
@@ -68,6 +75,6 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def update_round_params
-    params.require(:payload).permit(:status)
+    params.require(:payload).permit(:status, :participant_type, :prompt)
   end
 end
