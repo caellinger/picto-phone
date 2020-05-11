@@ -74,7 +74,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       new_count = Round.count
 
       expect(new_count).to eq(previous_count + 1)
-      expect(response_body["round"].length).to eq 8
+      expect(response_body["round"].length).to eq 9
       expect(response_body["round"]["starter_name"]).to eq user.user_name
       expect(response_body["participant"].length).to eq 9
       expect(response_body["participant"]["user_id"]).to eq user.id

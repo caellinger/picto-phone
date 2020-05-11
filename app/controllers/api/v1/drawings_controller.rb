@@ -46,6 +46,6 @@ class Api::V1::DrawingsController < ApplicationController
   private
 
   def drawing_params
-    params.require(:payload).permit(:drawing, :user_id, :round_id, :turn)
+    params.require(:payload).permit(:drawing, :user_id, :round_id, :turn) # TODO: DON'T THINK I NEED TURN HERE, CONFIRM
   end
 end
