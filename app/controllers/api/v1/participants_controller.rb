@@ -5,7 +5,7 @@ class Api::V1::ParticipantsController < ApplicationController
   def create
     participant = Participant.new(create_participant_params)
     if participant.save
-      render json: {participant: participant}
+      render json: { round: Round.find(participant.round_id) }
     else
       render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
     end
