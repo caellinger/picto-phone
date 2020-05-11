@@ -21,8 +21,7 @@ class Api::V1::RoundsController < ApplicationController
 
       if participant.save
         render json: {
-          round: round,
-          participant: participant
+          round: round
         }
       else
         render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
@@ -58,16 +57,6 @@ class Api::V1::RoundsController < ApplicationController
         render json: { error: round.errors.full_messages }, status: :unprocessable_entity
       end
     end
-    #
-    # if update_round_params[:participant_type]
-    #   participant.participant_type = update_round_params[:participant_type]
-    # end
-
-    if update_round_params[:prompt]
-      round.round_prompt = update_round_params[:prompt]
-      round.current_prompt = update_round_params[:prompt]
-      participant.prompt = update_round_params[:prompt]
-    end # TODO: REMOVE ONCE WORDS API IS CONNECTED
 
     if update_round_params[:guess]
       participant.response = update_round_params[:guess]
@@ -100,19 +89,6 @@ class Api::V1::RoundsController < ApplicationController
         render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
       end
     end
-
-    # if round.save
-    #   if participant.save
-    #     render json: {
-    #       round: round, serializer: Api::V1::RoundShowSerializer #,
-    #       # participant: participant # TODO: IS THIS USED ANYWHERE?
-    #     }
-    #   else
-    #     render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
-    #   end
-    # else
-    #   render json: { error: round.errors.full_messages }, status: :unprocessable_entity
-    # end
   end
 
   private
