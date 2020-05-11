@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :rounds, only: [:index, :create, :show, :update]
       resources :participants, only: [:create]
+      resources :drawings, only: [:create]
     end
   end
 end
