@@ -11,18 +11,14 @@ const DrawingComponent = (props) => {
       let payload = {
         drawing: `${this.sigCanvas.toDataURL("image/jpeg")}`,
         user_id: props.user.id,
-        round_id: props.round.id,
-        turn: true
+        round_id: props.round.id //,
+        // turn: true
       }
       let endpoint = "/api/v1/drawings"
       props.submitDrawing(payload, endpoint)
       this.sigCanvas.clear()
     }
   }
-  // let ref = {
-  //   backgroundColor: 'rgb(242,242,235)',
-  //   penColor: 'rgb(250,0,0)'
-  // }
 
   return (
     <div className="grid-x">
