@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import RoundWaitingComponent from '../components/RoundWaitingComponent'
 import RoundInProgressComponent from '../components/RoundInProgressComponent'
 import DrawingComponent from '../components/DrawingComponent'
+import GuessingComponent from '../components/GuessingComponent'
 
 const RoundsShowContainer = (props) => {
   const [round, setRound] = useState({
@@ -104,6 +105,10 @@ const RoundsShowContainer = (props) => {
     fetchPost(payload, endpoint, 'POST')
   }
 
+  function submitGuess(payload, endpoint) {
+    fetchPost(payload, endpoint, 'PATCH')
+  }
+
   let renderComponent
     if (status == "waiting") {
       renderComponent = <RoundWaitingComponent
@@ -120,10 +125,17 @@ const RoundsShowContainer = (props) => {
         submitDrawing={submitDrawing}
       />
     } else if (status == "in progress" && turnUserID == user.id && turn % 2 != 0) {
-      renderComponent = <div>Guessing</div>
-    } else {
+      renderComponent = <GuessingComponent
+        user={user}
+        round={round}
+        currentPrompt={currentPrompt}
+        submitGuess={submitGuess}
+      />
+    } else if (status == "in progress" && turnUserID != user.id) {
       renderComponent = <RoundInProgressComponent
       />
+    } else {
+      renderComponent = <div>Done!</div>
     }
 
   return (

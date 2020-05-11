@@ -4,7 +4,7 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
   describe "POST#new" do
     let!(:user_1) { User.create(email: "test1@email.com", user_name: "test_user_1", password: "password") }
     let!(:user_2) { User.create(email: "test2@email.com", user_name: "test_user_2", password: "password") }
-    let!(:new_round) { Round.create(starter_name: "test_user", turn_user_id: user_1.id) }
+    let!(:new_round) { Round.create(starter_name: "test_user_1", turn_user_id: user_1.id) }
     let!(:new_participant_1) { { payload: { user_id: user_1.id, round_id: new_round.id, round_starter: true } } }
 
     it "fails to create a new Participant record for an unauthenticated user" do
@@ -23,10 +23,10 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
       new_count = Participant.count
 
       expect(new_count).to eq(previous_count + 1)
-      expect(response_body["participant"].length).to eq 9
-      expect(response_body["participant"]["round_id"]).to eq new_round.id
-      expect(response_body["participant"]["user_id"]).to eq user_1.id
-      expect(response_body["participant"]["round_starter"]).to eq true
+      expect(response_body["round"].length).to eq 9
+      expect(response_body["round"]["id"]).to eq new_round.id
+      expect(response_body["round"]["turn_user_id"]).to eq user_1.id
+      expect(response_body["round"]["starter_name"]).to eq user_1.user_name
     end
 
     context "when a malformed request is made" do

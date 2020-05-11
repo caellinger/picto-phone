@@ -5,6 +5,7 @@ const StartRoundButton = (props) => {
   let clickStart = (event) => {
     event.preventDefault()
     let payload = {
+      round_id: props.round.id,
       status: "in progress",
       participant_type: "drawer",
       prompt: "elephant" // TODO: REMOVE ONCE WORDS API IS CONNECTED

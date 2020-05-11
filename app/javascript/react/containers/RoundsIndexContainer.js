@@ -58,7 +58,7 @@ const RoundsIndexContainer = () => {
     })
     .then(response => response.json())
     .then(body => {
-      setRoundID(body.participant.round_id)
+      setRoundID(body.round.id)
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }

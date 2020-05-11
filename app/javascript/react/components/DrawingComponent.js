@@ -11,8 +11,7 @@ const DrawingComponent = (props) => {
       let payload = {
         drawing: `${this.sigCanvas.toDataURL("image/jpeg")}`,
         user_id: props.user.id,
-        round_id: props.round.id //,
-        // turn: true
+        round_id: props.round.id
       }
       let endpoint = "/api/v1/drawings"
       props.submitDrawing(payload, endpoint)
@@ -22,6 +21,7 @@ const DrawingComponent = (props) => {
 
   return (
     <div className="grid-x">
+      <h3 className="page-title cell small-12">Draw Away</h3>
       <div>
         Your prompt is: {props.currentPrompt}
       </div>
