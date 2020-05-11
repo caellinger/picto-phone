@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const GuessingComponent = (props) => {
-  const [guess, setGuess] = useState(null)
+  const [guess, setGuess] = useState("")
 
   const handleInputChange = (event) => {
     setGuess(event.currentTarget.value)
@@ -10,19 +10,30 @@ const GuessingComponent = (props) => {
   let submitHandler = (event) => {
     event.preventDefault()
 
-    if (guess = "") {
+    if (guess == null) {
       alert("You have to take a guess!");
     } else {
       let payload = {
+        round_id: props.round.id,
+        guess: guess
       }
-      let endpoint = "/api/v1/participants"
-      props.submitDrawing(payload, endpoint)
+      let endpoint = `/api/v1/rounds/${props.round.id}`
+      props.submitGuess(payload, endpoint)
     }
   }
 
   return (
     <div className="grid-x">
       <h3 className="page-title cell small-12">Take a Wild Guess</h3>
+      <div className="prompt-drawing cell small-8 small-offset-2 medium-4 medium-offset-4">
+        <img
+          src={props.currentPrompt}
+          alt="drawing"
+        />
+      </div>
+
+      <p className="cell small-12"> </p>
+
       <div className="guess-form cell small-12 grid-container">
         <div className="grid-x">
           <form

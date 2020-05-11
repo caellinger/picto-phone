@@ -129,10 +129,13 @@ const RoundsShowContainer = (props) => {
         user={user}
         round={round}
         currentPrompt={currentPrompt}
+        submitGuess={submitGuess}
       />
-    } else {
+    } else if (status == "in progress" && turnUserID != user.id) {
       renderComponent = <RoundInProgressComponent
       />
+    } else {
+      renderComponent = <div>Done!</div>
     }
 
   return (

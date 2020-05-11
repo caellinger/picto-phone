@@ -13,6 +13,7 @@ class Api::V1::DrawingsController < ApplicationController
       if participant.save
         round = Round.find(drawing_params[:round_id])
         round.turn += 1
+        round.current_prompt = "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg"
         if round.turn == round.participants.count
           round.status = "complete"
           if round.save
