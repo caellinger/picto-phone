@@ -30,6 +30,9 @@ gem "active_model_serializers"
 gem "fog-aws"
 gem 'carrierwave', '~> 2.0'
 gem 'carrierwave-base64'
+gem 'faraday'
+gem 'vcr'
+gem 'webmock'
 
 group :development, :test do
 

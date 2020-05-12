@@ -40,10 +40,9 @@ class Api::V1::RoundsController < ApplicationController
     participant = round.participants.where(user_id: current_user.id)[0]
 
     if update_round_params[:status]
-        round.round_prompt = update_round_params[:prompt]
-        round.current_prompt = update_round_params[:prompt]
-        participant.prompt = update_round_params[:prompt]
-        # TODO: REMOVE ONCE WORDS API IS CONNECTED
+      round.round_prompt = get_prompt["word"]
+      round.current_prompt = round.round_prompt
+      participant.prompt = round.round_prompt
 
       round.status = update_round_params[:status]
       if round.save
@@ -99,5 +98,12 @@ class Api::V1::RoundsController < ApplicationController
 
   def update_round_params
     params.require(:payload).permit(:round_id, :status, :participant_type, :prompt, :guess)
+  end
+
+  def get_prompt
+    url = "https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=noun%2Cverb-intransitive&minCorpusCount=150000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=#{ENV["WORDNIK_API_KEY"]}"
+    response = Faraday.get(url)
+
+    prompt_result = JSON.parse(response.body)
   end
 end
