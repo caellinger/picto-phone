@@ -3,11 +3,17 @@ class Api::V1::ParticipantsController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def create
-    participant = Participant.new(create_participant_params)
-    if participant.save
-      render json: { round: Round.find(participant.round_id) }
+    binding.pry
+    if Participant.where(round_id: create_participant_params[:round_id]).where(user_id: create_participant_params[:user_id])[0]
+      binding.pry
+      render json: { round: Round.find(create_participant_params[:round_id]) }
     else
-      render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+      participant = Participant.new(create_participant_params)
+      if participant.save
+        render json: { round: Round.find(participant.round_id) }
+      else
+        render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+      end
     end
   end
 
