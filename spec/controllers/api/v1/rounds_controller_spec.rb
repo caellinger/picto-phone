@@ -8,6 +8,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
     let!(:round2) { Round.create(starter_name: "test_user_2", turn_user_id: user2.id) }
 
     it "returns a successful response status and a content type of json" do
+      sign_in user1
       get :index
 
       expect(response.status).to eq 200
@@ -15,6 +16,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
     end
 
     it "returns all rounds in the database in order by created_at" do
+      sign_in user1
       get :index
       response_body = JSON.parse(response.body)
 
