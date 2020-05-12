@@ -15,7 +15,7 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
       expect(new_count).to eq(previous_count)
     end
 
-    it "creates a new Participant record for an authenticated user and returns the new Participant as json" do
+    it "creates a new Participant record for an authenticated user who is not already in the Round and returns the Round as json" do
       sign_in user_1
       previous_count = Participant.count
       post :create, params: new_participant_1, format: :json
@@ -23,6 +23,22 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
       new_count = Participant.count
 
       expect(new_count).to eq(previous_count + 1)
+      expect(response_body["round"].length).to eq 9
+      expect(response_body["round"]["id"]).to eq new_round.id
+      expect(response_body["round"]["turn_user_id"]).to eq user_1.id
+      expect(response_body["round"]["starter_name"]).to eq user_1.user_name
+    end
+
+    it "does not create a new Participant record for an authenticated user who is already in the Round and returns the Round as json" do
+      sign_in user_1
+      round = new_round
+      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      previous_count = Participant.count
+      post :create, params: new_participant_1, format: :json
+      response_body = JSON.parse(response.body)
+      new_count = Participant.count
+
+      expect(new_count).to eq(previous_count)
       expect(response_body["round"].length).to eq 9
       expect(response_body["round"]["id"]).to eq new_round.id
       expect(response_body["round"]["turn_user_id"]).to eq user_1.id
