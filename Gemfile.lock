@@ -80,6 +80,8 @@ GEM
       activesupport
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     crass (1.0.6)
     database_cleaner (1.8.4)
     devise (4.7.1)
@@ -98,6 +100,8 @@ GEM
     execjs (2.7.0)
     factory_bot (5.2.0)
       activesupport (>= 4.2.0)
+    faraday (1.0.1)
+      multipart-post (>= 1.2, < 3)
     ffi (1.12.2)
     fog-aws (3.6.3)
       fog-core (~> 2.1)
@@ -122,6 +126,7 @@ GEM
       sprockets-es6 (>= 0.9.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hashdiff (1.0.1)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     image_processing (1.10.3)
@@ -158,6 +163,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.14.0)
     multi_json (1.14.1)
+    multipart-post (2.1.1)
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
@@ -227,6 +233,7 @@ GEM
     ruby-vips (2.0.17)
       ffi (~> 1.9)
     ruby_dep (1.5.0)
+    safe_yaml (1.0.5)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -259,6 +266,7 @@ GEM
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     valid_attribute (2.0.0)
+    vcr (5.1.0)
     warden (1.2.8)
       rack (>= 2.0.6)
     web-console (3.7.0)
@@ -266,6 +274,10 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
+    webmock (3.8.3)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     webpacker (3.6.0)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
@@ -288,6 +300,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   factory_bot
+  faraday
   fog-aws
   foundation-rails (~> 6.5)
   jbuilder (~> 2.5)
@@ -304,7 +317,9 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   valid_attribute
+  vcr
   web-console (>= 3.3.0)
+  webmock
   webpacker (~> 3.3)
 
 RUBY VERSION

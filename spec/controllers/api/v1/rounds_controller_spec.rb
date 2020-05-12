@@ -194,20 +194,22 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
     let!(:participant9) { Participant.create(user_id: user3.id, round_id: round4.id, round_starter: false) }
 
     it "updates status and participant type when receiving a fetch request from the start button and returns round as json" do
-      sign_in user1
-      edit_json = {
-        id: round1.id,
-        payload: {
-          round_id: round1.id,
-          status: "in progress",
-          participant_type: "drawer"
-        } }
-      put :update, params: edit_json, format: :json
-      response_body = JSON.parse(response.body)
+      VCR.use_cassette('get_prompt_from_API') do
+        sign_in user1
+        edit_json = {
+          id: round1.id,
+          payload: {
+            round_id: round1.id,
+            status: "in progress",
+            participant_type: "drawer"
+          } }
+        put :update, params: edit_json, format: :json
+        response_body = JSON.parse(response.body)
 
-      expect(Round.find(round1.id).status).to eq "in progress"
-      expect(Participant.find(participant1.id).participant_type).to eq "drawer"
-      expect(response_body["round"].length).to eq 9
+        expect(Round.find(round1.id).status).to eq "in progress"
+        expect(Participant.find(participant1.id).participant_type).to eq "drawer"
+        expect(response_body["round"].length).to eq 9
+      end
     end
 
     it "updates current participant with response and updates round with current_prompt and increments turn when receiving a fetch request from the submit guess button and returns round as json" do

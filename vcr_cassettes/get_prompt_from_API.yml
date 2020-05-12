@@ -1,0 +1,54 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.wordnik.com/v4/words.json/randomWord?api_key=<WORDNIK_API_KEY>&hasDictionaryDef=true&includePartOfSpeech=noun,verb-intransitive&maxCorpusCount=-1&maxDictionaryCount=-1&maxLength=-1&minCorpusCount=150000&minDictionaryCount=1&minLength=5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v1.0.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 May 2020 01:15:44 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - nginx/1.14.1
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Ratelimit-Remaining-Hour:
+      - '198'
+      X-Ratelimit-Remaining-Minute:
+      - '4'
+      X-Ratelimit-Limit-Minute:
+      - '5'
+      X-Ratelimit-Limit-Hour:
+      - '200'
+      X-Kong-Upstream-Latency:
+      - '70'
+      X-Kong-Proxy-Latency:
+      - '1'
+      Via:
+      - kong/1.4.2
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":0,"word":"thing"}'
+    http_version: null
+  recorded_at: Tue, 12 May 2020 01:15:44 GMT
+recorded_with: VCR 5.1.0
