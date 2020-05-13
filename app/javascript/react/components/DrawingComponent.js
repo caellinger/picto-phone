@@ -2,6 +2,12 @@ import React, { useState } from 'react'
 import SignatureCanvas from 'react-signature-canvas'
 
 const DrawingComponent = (props) => {
+  let clearCanvas = (event) => {
+    event.preventDefault()
+
+    this.sigCanvas.clear()
+  }
+
   let submitHandler = (event) => {
     event.preventDefault()
 
@@ -31,7 +37,13 @@ const DrawingComponent = (props) => {
       </div>
       <input
         type="submit"
-        className="cell small-8 small-offset-2 medium-4 medium-offset-4 align-middle custom-button align-center"
+        className="cell small-8 small-offset-2 medium-3 medium-offset-2 align-middle custom-button align-center stacked-button-gap"
+        value="Clear"
+        onClick={clearCanvas}
+      />
+      <input
+        type="submit"
+        className="cell small-8 small-offset-2 medium-3 medium-offset-2 align-middle custom-button align-center"
         value="Submit"
         onClick={submitHandler}
       />
