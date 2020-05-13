@@ -4,5 +4,5 @@ class Drawing < ApplicationRecord
 
   belongs_to :participant
 
-  # mount_base64_uploader :drawing, DrawingUploader
+  mount_base64_uploader :drawing, DrawingUploader
 end
