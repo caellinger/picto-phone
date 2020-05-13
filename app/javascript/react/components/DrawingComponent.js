@@ -32,6 +32,7 @@ const DrawingComponent = (props) => {
       <div className="sig-pad-container cell small-12">
         <SignatureCanvas
           ref={(ref) => { this.sigCanvas = ref }}
+          clearOnResize=false
           backgroundColor='#f2f2eb'
         />
       </div>
