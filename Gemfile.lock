@@ -209,6 +209,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (4.1.4)
     regexp_parser (1.7.0)
     responders (3.0.0)
       actionpack (>= 5.0)
@@ -311,6 +312,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.11)
   rails (~> 5.2.3)
+  redis (~> 4.0)
   rspec-rails (= 3.8.2)
   sass-rails (~> 5.0)
   shoulda-matchers
@@ -323,7 +325,7 @@ DEPENDENCIES
   webpacker (~> 3.3)
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.6.3p62
 
 BUNDLED WITH
    2.1.4

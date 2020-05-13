@@ -17,8 +17,7 @@ const GuessingComponent = (props) => {
         round_id: props.round.id,
         guess: guess
       }
-      let endpoint = `/api/v1/rounds/${props.round.id}`
-      props.submitGuess(payload, endpoint)
+      props.submitGuess(payload)
     }
   }
 
@@ -27,7 +26,7 @@ const GuessingComponent = (props) => {
       <h3 className="page-title cell small-12">Take a Wild Guess</h3>
       <div className="prompt-drawing cell small-8 small-offset-2 medium-4 medium-offset-4">
         <img
-          src={props.currentPrompt}
+          src={props.round.currentPrompt}
           alt="drawing"
         />
       </div>
