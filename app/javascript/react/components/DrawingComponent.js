@@ -10,11 +10,9 @@ const DrawingComponent = (props) => {
     } else {
       let payload = {
         drawing: `${this.sigCanvas.toDataURL("image/jpeg")}`,
-        user_id: props.user.id,
         round_id: props.round.id
       }
-      let endpoint = "/api/v1/drawings"
-      props.submitDrawing(payload, endpoint)
+      props.submitDrawing(payload)
       this.sigCanvas.clear()
     }
   }
@@ -23,7 +21,7 @@ const DrawingComponent = (props) => {
     <div className="grid-x">
       <h3 className="page-title cell small-12">Draw Away</h3>
       <div>
-        Your prompt is: {props.currentPrompt}
+        Your prompt is: {props.round.currentPrompt}
       </div>
       <div className="sig-pad-container cell small-12">
         <SignatureCanvas
