@@ -15,7 +15,6 @@ class RoundChannel < ApplicationCable::Channel
       round.round_prompt = get_prompt["word"]
       round.current_prompt = round.round_prompt
       participant.prompt = round.round_prompt
-      binding.pry
 
       if round.save
         participant.participant_type = data["participant_type"]
@@ -82,10 +81,10 @@ class RoundChannel < ApplicationCable::Channel
       drawing = Drawing.create(drawing: data_uri, participant_id: participant.id)
 
       if drawing.save
-        participant.response = "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg" # drawing.drawing.url # TODO: UPDATE ONCE AWS IS HOOKED UP
+        participant.response = drawing.drawing.url # "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg" # use the regular link instead of drawing.drawing.url if you aren't sending things up to AWS in dev
         if participant.save
           round.turn += 1
-          round.current_prompt = "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg" # drawing.drawing.url # TODO: UPDATE ONCE AWS IS HOOKED UP
+          round.current_prompt = drawing.drawing.url # "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg" # use the regular link instead of drawing.drawing.url if you aren't sending things up to AWS in dev
           if round.turn == round.participants.count
             round.status = "complete"
             if round.save
@@ -104,7 +103,7 @@ class RoundChannel < ApplicationCable::Channel
             next_participant = Participant.where(round_id: round.id).order(:created_at).offset(round.turn)[0]
             round.turn_user_id = next_participant.user_id
             if round.save
-              next_participant.prompt = "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg" # drawing.drawing.url # TODO: UPDATE ONCE AWS IS HOOKED UP
+              next_participant.prompt = drawing.drawing.url # "http://fallinpets.com/wp-content/uploads/2016/09/cat-funny-600x548.jpg" # use the regular link instead of drawing.drawing.url if you aren't sending things up to AWS in dev
               next_participant.participant_type = "guesser"
               if next_participant.save
                 round_json = {
