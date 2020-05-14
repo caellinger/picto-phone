@@ -4,6 +4,7 @@ import RoundWaitingComponent from '../components/RoundWaitingComponent'
 import RoundInProgressComponent from '../components/RoundInProgressComponent'
 import DrawingComponent from '../components/DrawingComponent'
 import GuessingComponent from '../components/GuessingComponent'
+import ConclusionComponent from '../components/ConclusionComponent'
 
 const RoundsShowContainer = (props) => {
   const [round, setRound] = useState({
@@ -102,7 +103,10 @@ const RoundsShowContainer = (props) => {
       renderComponent = <RoundInProgressComponent
       />
     } else {
-      renderComponent = <div>Done!</div>
+      renderComponent = <ConclusionComponent
+        user={user}
+        round={round}
+      />
     }
 
   return (
