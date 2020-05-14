@@ -11,6 +11,7 @@ const RoundsIndexContainer = () => {
     userName: null
   })
   const [round, setRound] = useState(null)
+  const [busy, setBusy] = useState(false)
 
   let setRoundID = (roundID) => {
     setRound(roundID)
@@ -58,7 +59,11 @@ const RoundsIndexContainer = () => {
     })
     .then(response => response.json())
     .then(body => {
-      setRoundID(body.round.id)
+      if (body.busy) {
+        setBusy(body.busy)
+      } else {
+        setRoundID(body.round.id)
+      }
     })
     .catch((error) => console.error(`Error in fetch: ${error.message}`))
   }
@@ -91,6 +96,16 @@ const RoundsIndexContainer = () => {
     return <Redirect to={`/rounds/${round}`} />
   }
 
+  let newRoundButtonColor
+  let busyMessage
+  if (busy || rounds.length > 1) {
+    newRoundButtonColor = "gray-button"
+    busyMessage = <p className="cell small-12 error-text">Too many rounds in progress, please try again in a few minutes</p>
+  } else {
+    newRoundButtonColor = "custom-button"
+    busyMessage = <></>
+  }
+
   return (
     <div className="grid-container">
       <div className="grid-x center">
@@ -98,7 +113,11 @@ const RoundsIndexContainer = () => {
           user={user}
           setRoundID={setRoundID}
           createRound={createRound}
+          roundCount={rounds.length}
+          busy={busy}
+          newRoundButtonColor={newRoundButtonColor}
         />
+        {busyMessage}
       </div>
       {roundsTiles}
     </div>
