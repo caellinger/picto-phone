@@ -7,27 +7,31 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def create
-    round = Round.new( {
-      starter_name: create_round_params[:starter_name],
-      turn_user_id: create_round_params[:turn_user_id]
-    } )
-
-    if round.save
-      participant =  Participant.new( {
-        user_id: create_round_params[:user_id],
-        round_starter: create_round_params[:round_starter],
-        round_id: round.id
+    if Round.where.not(status: "complete").count > 1
+      render json: { busy: true }
+    else
+      round = Round.new( {
+        starter_name: create_round_params[:starter_name],
+        turn_user_id: create_round_params[:turn_user_id]
       } )
 
-      if participant.save
-        render json: {
-          round: round
-        }
+      if round.save
+        participant =  Participant.new( {
+          user_id: create_round_params[:user_id],
+          round_starter: create_round_params[:round_starter],
+          round_id: round.id
+        } )
+
+        if participant.save
+          render json: {
+            round: round
+          }
+        else
+          render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+        end
       else
-        render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+        render json: { error: round.errors.full_messages }, status: :unprocessable_entity
       end
-    else
-      render json: { error: round.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
