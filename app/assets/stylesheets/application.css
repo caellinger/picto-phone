@@ -30,7 +30,7 @@ a{
 }
 
 .top-bar h1{
-  font-family: 'Luckiest Guy', cursive;
+  font-family: 'Luckiest Guy';
   margin-top: 1rem;
 }
 
@@ -104,6 +104,13 @@ label{
   font-size: 1.5em;
   margin: 0 auto;
   text-align: center;
+}
+
+.final-text {
+  font-weight: bold;
+  font-size: 2em;
+  margin: 0 auto;
+  margin-bottom: 1em
 }
 
 canvas {
