@@ -61,6 +61,7 @@ const RoundsIndexContainer = () => {
     .then(body => {
       if (body.busy) {
         setBusy(true)
+        setJoinError(false)
       } else if (body.round) {
         setRound(body.round.id)
       } else {
@@ -103,7 +104,7 @@ const RoundsIndexContainer = () => {
   }
 
   if (rounds.length < 1) {
-    roundsTiles = "No active games"
+    roundsTiles = ""
   } else {
     roundsTiles = rounds.map(round => {
       return (
@@ -119,7 +120,7 @@ const RoundsIndexContainer = () => {
   }
 
   if (joinError) {
-    errorMessage = <p className="callout alert cell small-12 error-text">Too many players in that round, please choose a different one</p>
+    errorMessage = <p className="cell small-12 error-text join-error">That round is full, try a different one</p>
   } else {
     <></>
   }
@@ -130,7 +131,6 @@ const RoundsIndexContainer = () => {
 
   return (
     <div className="grid-container">
-      {errorMessage}
       <div className="grid-x center">
         <NewRoundButton
           user={user}
@@ -141,6 +141,7 @@ const RoundsIndexContainer = () => {
         />
         {busyMessage}
       </div>
+      {errorMessage}
       {roundsTiles}
     </div>
   )
