@@ -30,7 +30,7 @@ class Api::V1::RoundsController < ApplicationController
         left join participants on rounds.id = participants.round_id
         where rounds.status like 'waiting'
         group by rounds.id
-        having count(participants.id) < 5;"),
+        having count(participants.id) < 4;"),
       current_user: user,
       capped: capped
     }
