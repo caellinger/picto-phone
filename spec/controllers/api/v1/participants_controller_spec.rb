@@ -45,14 +45,14 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
       expect(response_body["round"]["starter_name"]).to eq user_1.user_name
     end
 
-    it "does not create a new Participant record for an authenticated user if there are already 5 participants in the round and returns an error" do
+    it "does not create a new Participant record for an authenticated user if there are already 4 participants in the round and returns an error" do
       sign_in user_1
       round = new_round
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
-      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      # Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       previous_count = Participant.count
       post :create, params: new_participant_1, format: :json
       response_body = JSON.parse(response.body)
