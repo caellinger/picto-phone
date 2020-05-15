@@ -52,7 +52,6 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
-      # Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
       previous_count = Participant.count
       post :create, params: new_participant_1, format: :json
       response_body = JSON.parse(response.body)
