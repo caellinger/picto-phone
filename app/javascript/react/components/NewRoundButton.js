@@ -5,7 +5,7 @@ const NewRoundButton = (props) => {
   let newRoundClick = (event) => {
     event.preventDefault()
     let payload = {
-      starter_name: props.user.userName,
+      starter_name: props.user.user_name,
       turn_user_id: props.user.id,
       user_id: props.user.id,
       round_starter: true

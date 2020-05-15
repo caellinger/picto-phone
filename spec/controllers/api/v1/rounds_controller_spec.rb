@@ -15,13 +15,13 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       expect(response.content_type).to eq 'application/json'
     end
 
-    it "returns all rounds in the database in order by created_at" do
+    it "returns all rounds with status: waiting in order by created_at" do
       sign_in user1
       get :index
       response_body = JSON.parse(response.body)
 
-      expect(response_body.length).to eq 1
-      expect(response_body["rounds"][0].length).to eq 3
+      expect(response_body.length).to eq 3
+      expect(response_body["rounds"][0].length).to eq 2
       expect(response_body["rounds"][0]["starter_name"]).to eq round1.starter_name
 
       expect(response_body["rounds"][1]["starter_name"]).to eq round2.starter_name
@@ -32,16 +32,16 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       get :index
       response_body = JSON.parse(response.body)
 
-      expect(response_body["rounds"][0]["current_user"].length).to eq 2
-      expect(response_body["rounds"][0]["current_user"]["userName"]).to eq user1.user_name
+      expect(response_body["current_user"].length).to eq 2
+      expect(response_body["current_user"]["user_name"]).to eq user1.user_name
     end
 
     it "returns nil user information if user is not logged in" do
       get :index
       response_body = JSON.parse(response.body)
 
-      expect(response_body["rounds"][0]["current_user"].length).to eq 2
-      expect(response_body["rounds"][0]["current_user"]["userName"]).to eq nil
+      expect(response_body["current_user"].length).to eq 2
+      expect(response_body["current_user"]["user_name"]).to eq nil
     end
   end
 
@@ -80,7 +80,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       new_count = Round.count
 
       expect(new_count).to eq(previous_count)
-      expect(response_body["busy"]).to eq(true)
+      expect(response_body["busy"]).to eq("Too many rounds in progress, please try again in a few minutes")
     end
 
     it "creates a new Round record and Participant record for an authenticated user and returns the new Round as json" do

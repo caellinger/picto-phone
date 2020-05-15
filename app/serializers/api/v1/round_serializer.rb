@@ -3,9 +3,9 @@ class Api::V1::RoundSerializer < ActiveModel::Serializer
 
   def current_user
     if scope
-      {id: scope.id, userName: scope.user_name}
+      {id: scope.id, user_name: scope.user_name}
     else
-      {id: nil, userName: nil}
+      {id: nil, user_name: nil}
     end
   end
 end

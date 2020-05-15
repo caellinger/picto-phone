@@ -45,6 +45,23 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
       expect(response_body["round"]["starter_name"]).to eq user_1.user_name
     end
 
+    it "does not create a new Participant record for an authenticated user if there are already 5 participants in the round and returns an error" do
+      sign_in user_1
+      round = new_round
+      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      Participant.create(user_id: user_1.id, round_id: round.id, round_starter: true)
+      previous_count = Participant.count
+      post :create, params: new_participant_1, format: :json
+      response_body = JSON.parse(response.body)
+      new_count = Participant.count
+
+      expect(new_count).to eq(previous_count)
+      expect(response_body["join_error"]).to eq "Too many players in that round, please choose another"
+    end
+
     context "when a malformed request is made" do
       let!(:bad_participant_1) { { payload: { round_id: new_round.id, participant_type: "drawer", round_starter: true } } }
       let!(:bad_participant_2) { { payload: { user_id: user_1.id, participant_type: "drawer", round_starter: true } } }
@@ -58,17 +75,6 @@ RSpec.describe Api::V1::ParticipantsController, type: :controller do
 
         expect(new_count).to eq previous_count
         expect(response_body["error"][0]).to eq "User can't be blank"
-      end
-
-      it "does not create a new round and returns error if round_id is empty" do
-        sign_in user_1
-        previous_count = Round.count
-        post :create, params: bad_participant_2, format: :json
-        new_count = Round.count
-        response_body = JSON.parse(response.body)
-
-        expect(new_count).to eq previous_count
-        expect(response_body["error"][0]).to eq "Round can't be blank"
       end
     end
   end
