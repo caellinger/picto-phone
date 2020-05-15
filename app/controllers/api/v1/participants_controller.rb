@@ -10,7 +10,7 @@ class Api::V1::ParticipantsController < ApplicationController
             rounds.id,
             rounds.starter_name
           from rounds
-          join participants on rounds.id = participants.round_id
+          left join participants on rounds.id = participants.round_id
           where rounds.status like 'waiting'
           group by rounds.id
           having count(participants.id) < 5;"),

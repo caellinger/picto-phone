@@ -27,7 +27,6 @@ const RoundTile = (props) => {
       <input
         type="submit"
         className={buttonClassName}
-        // className="cell small-12 medium-2 align-middle tile-margins custom-button"
         value="Join"
         onClick={clickJoin}
       />

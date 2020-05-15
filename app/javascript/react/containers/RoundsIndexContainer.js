@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from "react-router-dom"
-import { _ } from "lodash"
 
 import RoundTile from '../components/RoundTile'
 import NewRoundButton from '../components/NewRoundButton'
@@ -60,7 +59,6 @@ const RoundsIndexContainer = () => {
     })
     .then(response => response.json())
     .then(body => {
-      debugger
       if (body.busy) {
         setBusy(true)
       } else if (body.round) {
