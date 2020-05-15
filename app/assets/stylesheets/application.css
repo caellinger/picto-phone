@@ -26,7 +26,7 @@ a{
 }
 
 .top-bar a{
-  color: #E6354A;
+  color: #E54659;
 }
 
 .top-bar h1{
@@ -65,20 +65,22 @@ label{
 }
 
 .custom-button{
-  background-color: #E6354A;
+  background-color: #E54659;
   font-size: 1.5rem;
   color: white;
   font-weight: bold;
   margin-top: 1rem;
+  border-radius: 30px
 }
 
 .gray-button{
-  background-color: gray;
+  background-color: #c2b8b9;
   font-size: 1.5rem;
   color: white;
   font-weight: bold;
   margin-top: 1rem;
   text-align: center;
+  border-radius: 30px
 }
 
 .center {
@@ -100,7 +102,7 @@ label{
 }
 
 .page-title {
-  color: #E6354A;
+  color: #E54659;
   font-size: 3em;
   text-align: center;
   font-family: 'Luckiest Guy', cursive;
@@ -114,7 +116,7 @@ label{
 .waiting {
   font-style: italic;
   font-weight: bold;
-  color: #E6354A;
+  color: #E54659;
   font-size: 1.5em;
   margin: 0 auto;
   text-align: center;
@@ -132,4 +134,9 @@ canvas {
   background: #f2f2eb;
   height: 450px;
   width: 100%;
+}
+
+.callout.alert {
+  background-color: #f9cdd2;
+  border-color: #f7bbc2;
 }
