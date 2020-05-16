@@ -15,30 +15,22 @@ class Api::V1::RoundsController < ApplicationController
       }
     end
 
-    if Round.where.not(status: "complete").count > 1
+    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 25
       capped = true
     else
       capped = false
     end
 
     render json: {
-      rounds: Round.find_by_sql("
-        select
-          rounds.id,
-          rounds.starter_name
-        from rounds
-        left join participants on rounds.id = participants.round_id
-        where rounds.status like 'waiting'
-        group by rounds.id
-        having count(participants.id) < 4;"),
+      rounds: Round.where(status: "waiting").where(updated_at: 30.minutes.ago..Float::INFINITY).filter {|round| round.participants.count < 6},
       current_user: user,
       capped: capped
     }
   end
 
   def create
-    if Round.where.not(status: "complete").count > 1
-      render json: { busy: "Too many rounds in progress, please try again in a few minutes" }
+    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 25
+      render json: { busy: true }
     else
       round = Round.new( {
         starter_name: create_round_params[:starter_name],
