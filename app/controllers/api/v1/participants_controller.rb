@@ -3,18 +3,10 @@ class Api::V1::ParticipantsController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def create
-    if Round.find(create_participant_params[:round_id]).participants.count > 3
+    if Round.find(create_participant_params[:round_id]).participants.count > 5
       render json: {
-        rounds: Round.find_by_sql("
-          select
-            rounds.id,
-            rounds.starter_name
-          from rounds
-          left join participants on rounds.id = participants.round_id
-          where rounds.status like 'waiting'
-          group by rounds.id
-          having count(participants.id) < 4;"),
-        join_error: "Too many players in that round, please choose another"
+        rounds: Round.where(status: "waiting").where(updated_at: 30.minutes.ago..Float::INFINITY).filter {|round| round.participants.count < 6},
+        join_error: true
       }
     else
       if Participant.where(round_id: create_participant_params[:round_id]).where(user_id: create_participant_params[:user_id])[0]
