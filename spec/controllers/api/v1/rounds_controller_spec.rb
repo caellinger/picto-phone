@@ -21,7 +21,8 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       response_body = JSON.parse(response.body)
 
       expect(response_body.length).to eq 3
-      expect(response_body["rounds"][0].length).to eq 2
+      expect(response_body["rounds"].length).to eq 2
+      expect(response_body["rounds"][0].length).to eq 9
       expect(response_body["rounds"][0]["starter_name"]).to eq round1.starter_name
 
       expect(response_body["rounds"][1]["starter_name"]).to eq round2.starter_name
@@ -63,9 +64,8 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       expect(new_count).to eq(previous_count)
     end
 
-    it "fails to create a new Round record if there are already two rounds waiting or in progress and returns a busy message" do
-      Round.create(starter_name: "test_user_1", turn_user_id: user1.id)
-      Round.create(starter_name: "test_user_2", turn_user_id: user2.id)
+    it "fails to create a new Round record if there are already 25 rounds waiting or in progress and returns a busy message" do
+      25.times { Round.create(starter_name: "test_user_1", turn_user_id: user1.id) }
 
       sign_in user1
       previous_count = Round.count
@@ -80,7 +80,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
       new_count = Round.count
 
       expect(new_count).to eq(previous_count)
-      expect(response_body["busy"]).to eq("Too many rounds in progress, please try again in a few minutes")
+      expect(response_body["busy"]).to eq true
     end
 
     it "creates a new Round record and Participant record for an authenticated user and returns the new Round as json" do

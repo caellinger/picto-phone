@@ -15,7 +15,7 @@ class Api::V1::RoundsController < ApplicationController
       }
     end
 
-    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 25
+    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 24
       capped = true
     else
       capped = false
@@ -29,7 +29,7 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def create
-    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 25
+    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 24
       render json: { busy: true }
     else
       round = Round.new( {
