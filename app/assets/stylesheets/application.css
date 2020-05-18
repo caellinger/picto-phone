@@ -39,11 +39,6 @@ a{
   font-weight: bold;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-}
-
 .note-text {
   margin-left: 2rem;
   margin-right: 2rem;
