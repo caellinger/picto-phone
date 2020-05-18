@@ -17,7 +17,7 @@
  */
 
 a{
-  color: #326771;
+  color: #E54659;
   font-weight: bold;
 }
 
@@ -37,6 +37,19 @@ a{
 .top-bar p{
   margin-top: 10px;
   font-weight: bold;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+}
+
+.note-text {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+  font-style: italic;
+  text-align: center;
 }
 
 .content {
