@@ -25,6 +25,7 @@ rails s
 ```
 yarn start
 ```
+Then navigate to `http://localhost:3000` in your browser.
 
 ### Status
 PictoPhone is a work-in-progress. Check back soon for more features!
