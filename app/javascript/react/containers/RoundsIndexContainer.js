@@ -143,6 +143,9 @@ const RoundsIndexContainer = () => {
       </div>
       {errorMessage}
       {roundsTiles}
+      <div class="note-text">
+        <p><b>Note:</b> PictoPhone was created as a proof-of-concept and uses free-tier services, which limits how many players can be online at a time. Rounds are limited to 6 players each, and time out after 30 minutes of inactivity. You may encounter issues if there are too many rounds currently in progress. Please try again later, or click <a href="https://vimeo.com/419779003">here</a> for a side-by-side demonstration of what the game looks like in action.</p>
+      </div>
     </div>
   )
 }
