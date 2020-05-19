@@ -3,6 +3,8 @@ class Api::V1::RoundsController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def index
+    rounds_check = RoundsCheck.new()
+
     if current_user
       user = {
         id: current_user.id,
@@ -15,34 +17,29 @@ class Api::V1::RoundsController < ApplicationController
       }
     end
 
-    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 24
-      capped = true
-    else
-      capped = false
-    end
+    capped = rounds_check.in_progress_limit
 
     render json: {
-      rounds: Round.where(status: "waiting").where(updated_at: 30.minutes.ago..Float::INFINITY).filter {|round| round.participants.count < 6},
+      rounds: rounds_check.joinable_rounds_list,
       current_user: user,
       capped: capped
     }
   end
 
   def create
-    if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 24
+    rounds_check = RoundsCheck.new()
+
+    if rounds_check.in_progress_limit
       render json: { busy: true }
     else
-      round = Round.new( {
-        starter_name: create_round_params[:starter_name],
-        turn_user_id: create_round_params[:turn_user_id]
-      } )
+      round = Round.new(create_round_params)
 
       if round.save
-        participant =  Participant.new( {
-          user_id: create_round_params[:user_id],
-          round_starter: create_round_params[:round_starter],
+        participant =  Participant.new({
+          user_id: create_participant_params[:user_id],
+          round_starter: create_participant_params[:round_starter],
           round_id: round.id
-        } )
+        })
 
         if participant.save
           render json: {
@@ -119,7 +116,11 @@ class Api::V1::RoundsController < ApplicationController
   private
 
   def create_round_params
-    params.require(:payload).permit(:starter_name, :turn_user_id, :user_id, :round_starter)
+    params.require(:payload).permit(:starter_name, :turn_user_id)
+  end
+
+  def create_participant_params
+    params.require(:payload).permit(:user_id)
   end
 
   def update_round_params
