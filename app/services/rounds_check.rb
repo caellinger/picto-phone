@@ -1,5 +1,5 @@
 class RoundsCheck
-  def in_progress_limit
+  def in_progress_limit?
     if Round.where(updated_at: 30.minutes.ago..Float::INFINITY).count > 24
       return true
     else

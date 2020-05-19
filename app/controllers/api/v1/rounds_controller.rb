@@ -17,7 +17,7 @@ class Api::V1::RoundsController < ApplicationController
       }
     end
 
-    capped = rounds_check.in_progress_limit
+    capped = rounds_check.in_progress_limit?
 
     render json: {
       rounds: rounds_check.joinable_rounds_list,
