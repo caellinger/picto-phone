@@ -29,7 +29,7 @@ class Api::V1::RoundsController < ApplicationController
   def create
     rounds_check = RoundsCheck.new()
 
-    if rounds_check.in_progress_limit
+    if rounds_check.in_progress_limit?
       render json: { busy: true }
     else
       round = Round.new(create_round_params)
@@ -120,7 +120,7 @@ class Api::V1::RoundsController < ApplicationController
   end
 
   def create_participant_params
-    params.require(:payload).permit(:user_id)
+    params.require(:payload).permit(:user_id, :round_starter)
   end
 
   def update_round_params

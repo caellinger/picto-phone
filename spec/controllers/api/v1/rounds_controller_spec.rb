@@ -90,7 +90,7 @@ RSpec.describe Api::V1::RoundsController, type: :controller do
         starter_name: user1.user_name,
         turn_user_id: user1.id,
         user_id: user1.id,
-        round_starter: true,
+        round_starter: true
       } }
       post :create, params: new_json, format: :json
       response_body = JSON.parse(response.body)
