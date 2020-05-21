@@ -8,12 +8,14 @@ describe RoundStart do
     participant = Participant.create(user_id: user.id, round_id: round.id)
 
     it 'sets status to in progress, sets round and participant prompts, and sets participant type' do
-      RoundStart.new.start_round(round, participant)
+      VCR.use_cassette('get_prompt_from_API') do
+        RoundStart.new.start_round(round, participant)
 
-      expect(round.status).to eq "in progress"
-      expect(round.round_prompt).to eq "in progress" #what will this be after implementing VCR? just test for not null?
-      expect(round.current_prompt) # same question
-      expect(participant.prompt) # same question
+        expect(round.status).to eq "in progress"
+        expect(round.round_prompt).not_to be_nil
+        expect(round.current_prompt).to eq(round.round_prompt)
+        expect(participant.prompt).to eq(round.round_prompt)
+      end
     end
   end
 end
