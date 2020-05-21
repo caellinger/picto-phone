@@ -10,26 +10,21 @@ class RoundChannel < ApplicationCable::Channel
     round = Round.find(params[:round_id])
     participant = round.participants.where(user_id: current_user.id)[0]
 
-    if data["status"]
-      round_start = RoundStart.new(round, data["status"], participant)
-      round_start.update_status
-      round_start.get_prompt
+    if data["start"]
+      RoundStart.new.start_round(round, participant)
 
-      # if round.save
-        participant.participant_type = data["participant_type"]
-        if participant.save
-          round_json = {
-            id: round.id,
-            starterName: round.starter_name,
-            status: round.status,
-            turn: round.turn,
-            turnUserID: round.turn_user_id,
-            roundPrompt: round.round_prompt,
-            currentPrompt: round.current_prompt
-          }
-          ActionCable.server.broadcast("round_#{params[:round_id]}", round_json)
-        end
-      # end
+      if participant.save
+        round_json = {
+          id: round.id,
+          starterName: round.starter_name,
+          status: round.status,
+          turn: round.turn,
+          turnUserID: round.turn_user_id,
+          roundPrompt: round.round_prompt,
+          currentPrompt: round.current_prompt
+        }
+        ActionCable.server.broadcast("round_#{params[:round_id]}", round_json)
+      end
     end
 
     if data["guess"]

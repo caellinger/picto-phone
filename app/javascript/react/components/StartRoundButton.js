@@ -6,7 +6,7 @@ const StartRoundButton = (props) => {
     event.preventDefault()
     let payload = {
       round_id: props.round.id,
-      status: "in progress",
+      start: true,
       participant_type: "drawer",
     }
     props.updateStatusInProgress(payload)
