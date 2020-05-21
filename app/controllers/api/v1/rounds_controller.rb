@@ -58,60 +58,60 @@ class Api::V1::RoundsController < ApplicationController
     render json: Round.find(params[:id]), serializer: Api::V1::RoundShowSerializer
   end
 
-  def update
-    round = Round.find(update_round_params[:round_id])
-    participant = round.participants.where(user_id: current_user.id)[0]
-
-    if update_round_params[:status]
-      round.round_prompt = get_prompt["word"]
-      round.current_prompt = round.round_prompt
-      participant.prompt = round.round_prompt
-
-      round.status = update_round_params[:status]
-      if round.save
-        participant.participant_type = update_round_params[:participant_type]
-        if participant.save
-          render json: round, serializer: Api::V1::RoundShowSerializer
-        else
-          render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
-        end
-      else
-        render json: { error: round.errors.full_messages }, status: :unprocessable_entity
-      end
-    end
-
-    if update_round_params[:guess]
-      participant.response = update_round_params[:guess]
-      if participant.save
-        round.current_prompt = update_round_params[:guess]
-        round.turn += 1
-        if round.turn == round.participants.count
-          round.status = "complete"
-          if round.save
-            render json: round, serializer: Api::V1::RoundShowSerializer
-          else
-            render json: { error: round.errors.full_messages }, status: :unprocessable_entity
-          end
-        else
-          next_participant = Participant.where(round_id: round.id).order(:created_at).offset(round.turn)[0]
-          round.turn_user_id = next_participant.user_id
-          if round.save
-            next_participant.prompt = update_round_params[:guess]
-            next_participant.participant_type = "drawer"
-            if next_participant.save
-              render json: round, serializer: Api::V1::RoundShowSerializer
-            else
-              render json: { error: next_participant.errors.full_messages }, status: :unprocessable_entity
-            end
-          else
-            render json: { error: round.errors.full_messages }, status: :unprocessable_entity
-          end
-        end
-      else
-        render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
-      end
-    end
-  end
+  # def update
+  #   round = Round.find(update_round_params[:round_id])
+  #   participant = round.participants.where(user_id: current_user.id)[0]
+  #
+  #   if update_round_params[:status]
+  #     round.round_prompt = get_prompt["word"]
+  #     round.current_prompt = round.round_prompt
+  #     participant.prompt = round.round_prompt
+  #
+  #     round.status = update_round_params[:status]
+  #     if round.save
+  #       participant.participant_type = update_round_params[:participant_type]
+  #       if participant.save
+  #         render json: round, serializer: Api::V1::RoundShowSerializer
+  #       else
+  #         render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+  #       end
+  #     else
+  #       render json: { error: round.errors.full_messages }, status: :unprocessable_entity
+  #     end
+  #   end
+  #
+  #   if update_round_params[:guess]
+  #     participant.response = update_round_params[:guess]
+  #     if participant.save
+  #       round.current_prompt = update_round_params[:guess]
+  #       round.turn += 1
+  #       if round.turn == round.participants.count
+  #         round.status = "complete"
+  #         if round.save
+  #           render json: round, serializer: Api::V1::RoundShowSerializer
+  #         else
+  #           render json: { error: round.errors.full_messages }, status: :unprocessable_entity
+  #         end
+  #       else
+  #         next_participant = Participant.where(round_id: round.id).order(:created_at).offset(round.turn)[0]
+  #         round.turn_user_id = next_participant.user_id
+  #         if round.save
+  #           next_participant.prompt = update_round_params[:guess]
+  #           next_participant.participant_type = "drawer"
+  #           if next_participant.save
+  #             render json: round, serializer: Api::V1::RoundShowSerializer
+  #           else
+  #             render json: { error: next_participant.errors.full_messages }, status: :unprocessable_entity
+  #           end
+  #         else
+  #           render json: { error: round.errors.full_messages }, status: :unprocessable_entity
+  #         end
+  #       end
+  #     else
+  #       render json: { error: participant.errors.full_messages }, status: :unprocessable_entity
+  #     end
+  #   end
+  # end
 
   private
 
