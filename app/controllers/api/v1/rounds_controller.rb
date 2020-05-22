@@ -3,8 +3,6 @@ class Api::V1::RoundsController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def index
-    rounds_check = RoundsCheck.new()
-
     if current_user
       user = {
         id: current_user.id,
@@ -17,19 +15,17 @@ class Api::V1::RoundsController < ApplicationController
       }
     end
 
-    capped = rounds_check.in_progress_limit?
+    capped = RoundsCheck.new.in_progress_limit?
 
     render json: {
-      rounds: rounds_check.joinable_rounds_list,
+      rounds: RoundsCheck.new.joinable_rounds_list,
       current_user: user,
       capped: capped
     }
   end
 
   def create
-    rounds_check = RoundsCheck.new()
-
-    if rounds_check.in_progress_limit?
+    if RoundsCheck.new.in_progress_limit?
       render json: { busy: true }
     else
       round = Round.new(create_round_params)
