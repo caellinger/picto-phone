@@ -13,15 +13,7 @@ class RoundDrawing
       round.status = "complete"
       round.save
 
-      return {
-        id: round.id,
-        starterName: round.starter_name,
-        status: round.status,
-        turn: round.turn,
-        turnUserID: round.turn_user_id,
-        roundPrompt: round.round_prompt,
-        currentPrompt: round.current_prompt
-      }
+      return RoundJson.new.return_round_info(round)
     else
       next_participant = Participant.where(round_id: round.id).order(:created_at).offset(round.turn)[0]
       next_participant.prompt = round.current_prompt
@@ -31,15 +23,7 @@ class RoundDrawing
       round.turn_user_id = next_participant.user_id
       round.save
 
-      return {
-        id: round.id,
-        starterName: round.starter_name,
-        status: round.status,
-        turn: round.turn,
-        turnUserID: round.turn_user_id,
-        roundPrompt: round.round_prompt,
-        currentPrompt: round.current_prompt
-      }
+      return RoundJson.new.return_round_info(round)
     end
   end
 end
