@@ -13,61 +13,11 @@ class RoundChannel < ApplicationCable::Channel
     if data["start"]
       RoundStart.new.start_round(round, participant)
 
-      if participant.save
-        round_json = {
-          id: round.id,
-          starterName: round.starter_name,
-          status: round.status,
-          turn: round.turn,
-          turnUserID: round.turn_user_id,
-          roundPrompt: round.round_prompt,
-          currentPrompt: round.current_prompt
-        }
-        ActionCable.server.broadcast("round_#{params[:round_id]}", round_json)
-      end
+      ActionCable.server.broadcast("round_#{params[:round_id]}", RoundStart.new.start_round(round, participant))
     end
 
     if data["guess"]
-      participant.response = data["guess"]
-
-      if participant.save
-        round.current_prompt = data["guess"]
-        round.turn += 1
-        if round.turn == round.participants.count
-          round.status = "complete"
-          if round.save
-            round_json = {
-              id: round.id,
-              starterName: round.starter_name,
-              status: round.status,
-              turn: round.turn,
-              turnUserID: round.turn_user_id,
-              roundPrompt: round.round_prompt,
-              currentPrompt: round.current_prompt
-            }
-            ActionCable.server.broadcast("round_#{params[:round_id]}", round_json)
-          end
-        else
-          next_participant = Participant.where(round_id: round.id).order(:created_at).offset(round.turn)[0]
-          round.turn_user_id = next_participant.user_id
-          if round.save
-            next_participant.prompt = data["guess"]
-            next_participant.participant_type = "drawer"
-            if next_participant.save
-              round_json = {
-                id: round.id,
-                starterName: round.starter_name,
-                status: round.status,
-                turn: round.turn,
-                turnUserID: round.turn_user_id,
-                roundPrompt: round.round_prompt,
-                currentPrompt: round.current_prompt
-              }
-              ActionCable.server.broadcast("round_#{params[:round_id]}", round_json)
-            end
-          end
-        end
-      end
+      ActionCable.server.broadcast("round_#{params[:round_id]}", RoundGuess.new.log_guess(round, participant, data["guess"]))
     end
 
     if data["drawing"]
@@ -117,12 +67,12 @@ class RoundChannel < ApplicationCable::Channel
       end
     end
   end
-
-  private
-    def get_prompt
-      url = "https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=noun%2Cverb-intransitive&minCorpusCount=150000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=#{ENV["WORDNIK_API_KEY"]}"
-      response = Faraday.get(url)
-
-      prompt_result = JSON.parse(response.body)
-    end
+  #
+  # private
+  #   def get_prompt
+  #     url = "https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=noun%2Cverb-intransitive&minCorpusCount=150000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=#{ENV["WORDNIK_API_KEY"]}"
+  #     response = Faraday.get(url)
+  #
+  #     prompt_result = JSON.parse(response.body)
+  #   end
 end
