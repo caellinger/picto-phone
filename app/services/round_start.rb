@@ -8,5 +8,15 @@ class RoundStart
     participant.prompt = round.round_prompt
     participant.participant_type = "drawer"
     participant.save
+
+    return {
+      id: round.id,
+      starterName: round.starter_name,
+      status: round.status,
+      turn: round.turn,
+      turnUserID: round.turn_user_id,
+      roundPrompt: round.round_prompt,
+      currentPrompt: round.current_prompt
+    }
   end
 end
