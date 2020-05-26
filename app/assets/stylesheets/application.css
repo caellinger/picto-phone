@@ -79,7 +79,8 @@ label{
   font-weight: bold;
   margin-top: 1rem;
   text-align: center;
-  border-radius: 30px
+  border-radius: 30px;
+  margin-bottom: 1.5em;
 }
 
 .gray-button{
@@ -133,7 +134,7 @@ label{
 
 .final-text {
   font-weight: bold;
-  font-size: 2em;
+  font-size: 2.5em;
   margin: 0 auto;
   margin-bottom: 1em;
   text-align: center
@@ -154,4 +155,12 @@ canvas {
 .custom-button a {
   color: white;
   font-weight: bold;
+}
+
+.see-more-text {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  text-align: center;
 }
