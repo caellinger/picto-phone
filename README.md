@@ -2,7 +2,7 @@
 
 [![Codeship Status for caellinger/picto-phone](https://app.codeship.com/projects/c4d642b0-6be7-0138-fa1c-2a4bda735c4c/status?branch=master)](https://app.codeship.com/projects/394569)
 
-PictoPhone is an app developed by Christie Ellinger as a capstone project for Launch Academy. Play the game [here](https://picto-phone.herokuapp.com/).
+PictoPhone is an app developed by Christie Ellinger as a capstone project for Launch Academy.
 
 **Note**: PictoPhone was created as a proof-of-concept and uses free-tier services, which limits how many players can be online at a time. As such, you may encounter issues if there are already multiple rounds in progress. Please try again later, or click [here](https://vimeo.com/419779003) for a side-by-side demonstration of what the game looks like in action.
 
