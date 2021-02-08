@@ -28,7 +28,7 @@ gem 'redis', '~> 4.0'
 
 gem "active_model_serializers"
 gem "fog-aws"
-gem 'carrierwave', '~> 2.0'
+gem 'carrierwave', '~> 2.1'
 gem 'carrierwave-base64'
 gem 'faraday'
 gem 'vcr'
